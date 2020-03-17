@@ -10,9 +10,24 @@
 #### We used our estimates of cumulative severe case numbers, along with demographic data and data on hospital bed availibility to predict the spaital distribution of expected cumulative severe COVID-19 cases in the US.
 ## Preliminary results
 ### Relative number of severe cases in the US
-#### Colors show the base-10 log of the ratio of severe cases in each county to the average number of severe cases per county in the U.S.
+#### Colors show log10 ratio of severe cases in each county to the average number of severe cases per county in the U.S.
 ![alt text](https://github.com/ianfmiller/covid19-burden-mapping/blob/master/README.figs/rel.severe.cases.png)
-### ICU beds per severe case
+### Severe cases per ICU bed
+#### Colors show log10 ratio of severe cases in each county to the number of ICU beds in each county. Counties without ICU beds are shaded grey.
+#### This figure gives an incomplete picture of case burden per ICU bed, becasuse cases from counties without ICU beds are not accounted for. We are currently working to smooth cases/ICU beds across counties so that all cases will be accounted for.
+![alt text](https://github.com/ianfmiller/covid19-burden-mapping/blob/master/README.figs/severe.cases.icu.beds.png)
+### Total severe cases
+#### Colors show the log10 number of cumulative severe cases per county. As stated above, these cumulative case counts are calculated assuming that of all individuals in each age class are infected.
+![alt text](https://github.com/ianfmiller/covid19-burden-mapping/blob/master/README.figs/tot.severe.cases.png)
+### Total ICU beds
+#### Colors show the log10 number of ICU beds per county. Grey indicates no ICU beds.
+![alt text](https://github.com/ianfmiller/covid19-burden-mapping/blob/master/README.figs/icu.beds.png)
+### Total Population
+#### Colors show the log10 number of total population.
+![alt text](https://github.com/ianfmiller/covid19-burden-mapping/blob/master/README.figs/tot.population.png)
+### Total Population
+#### Colors show the percentage of individuals over the age of 60.
+![alt text](https://github.com/ianfmiller/covid19-burden-mapping/blob/master/README.figs/p.pop.60.plus.png)
 ## Code
 #### Code for all data analysis and plotting is contained in <a href="https://github.com/ianfmiller/covid19-burden-mapping/blob/master/mapping.R">mapping.R</a>
 ## Data sources
