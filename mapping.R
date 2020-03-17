@@ -1,7 +1,6 @@
 library(RCurl)
 library(usmap)
 library(ggplot2)
-library(RColorBrewer)
 library(viridis)
 
 ############# load/clean data #############
