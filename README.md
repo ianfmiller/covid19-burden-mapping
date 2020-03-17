@@ -10,8 +10,9 @@
 #### We used our estimates of cumulative severe case numbers, along with demographic data and data on hospital bed availibility to predict the spaital distribution of expected cumulative severe COVID-19 cases in the US.
 ## Preliminary results
 ### Relative number of severe cases in the US
-#### Colors show the ratio of severe cases in each county to the average number of severe cases per county in the U.S.
+#### Colors show the base-10 log of the ratio of severe cases in each county to the average number of severe cases per county in the U.S.
 ![alt text](https://github.com/ianfmiller/covid19-burden-mapping/blob/master/README.figs/rel.severe.cases.png)
+### ICU beds per severe case
 ## Code
 #### Code for all data analysis and plotting is contained in <a href="https://github.com/ianfmiller/covid19-burden-mapping/blob/master/mapping.R">mapping.R</a>
 ## Data sources
