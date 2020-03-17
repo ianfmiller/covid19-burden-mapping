@@ -8,7 +8,7 @@ library(viridis)
 
 ###demography data
 
-raw.demog<-read.csv(text=getURL("https://raw.githubusercontent.com/ianfmiller/covid2019-burden-mapping/master/us.demog.data.csv"),skip=1) #read from github
+raw.demog<-read.csv(text=getURL("https://raw.githubusercontent.com/ianfmiller/covid19-burden-mapping/master/us.demog.data.csv"),skip=1) #read from github
 demog<-raw.demog[,c(1,2,3,grep("2018",colnames(raw.demog)))] #pull out 2018 data
 colnames(demog)<-gsub("Population.Estimate..as.of.July.1....2018...","",colnames(demog)) #make column names easier to read
 fips<-as.character(unlist(strsplit(as.character(demog$Id),"US"))[seq(2,nrow(demog)*2,2)]) #pull out fips codes
@@ -16,7 +16,7 @@ demog<-data.frame("fips"=fips,demog) #add on fips column
 demog<-demog[order(demog$fips),] #sort by fips code
 ###hospital data
 
-hosp.data<-read.csv(text=getURL("https://raw.githubusercontent.com/ianfmiller/covid2019-burden-mapping/master/US.hosp.bed.data.csv")) #read from github
+hosp.data<-read.csv(text=getURL("https://raw.githubusercontent.com/ianfmiller/covid19-burden-mapping/master/US.hosp.bed.data.csv")) #read from github
 hosp.data$fips[which(nchar(hosp.data$fips)==4)]<-paste0("0",hosp.data$fips[which(nchar(hosp.data$fips)==4)]) #correct fips with leading 0s
 hosp.data<-hosp.data[order(hosp.data$fips),]
 
