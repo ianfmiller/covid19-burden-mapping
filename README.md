@@ -23,7 +23,7 @@
 #### Colors show the log10 number of ICU beds per county. Grey indicates no ICU beds.
 ![alt text](https://github.com/ianfmiller/covid19-burden-mapping/blob/master/README.figs/icu.beds.png)
 ### Total Population
-#### Colors show the log10 number of total population.
+#### Colors show log10 total population.
 ![alt text](https://github.com/ianfmiller/covid19-burden-mapping/blob/master/README.figs/tot.population.png)
 ### Total Population
 #### Colors show the percentage of individuals over the age of 60.
