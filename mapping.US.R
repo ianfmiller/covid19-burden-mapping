@@ -47,10 +47,10 @@ plot.data<-data.frame("fips"=fips,"dat"=log10(rel.severe.cases))
 usmap::plot_usmap(data=plot.data,values = "dat",col=NA)+scale_fill_continuous(low="white",high="darkred",name="log10\n(severe cases /\nmean severe\ncases)")
 
 ###icu beds per severe case--assuming 
-icu.beds.per.severe.case<-hosp.data$icu.beds/severe.cases
-icu.beds.per.severe.case[which(icu.beds.per.severe.case==0)]<-NA #switch to NA for plotting purposes
-plot.data<-data.frame("fips"=fips,"dat"=log10(icu.beds.per.severe.case))
-usmap::plot_usmap(data=plot.data,values = "dat",col=NA)+scale_fill_continuous(low="darkred",high="white",name="log10\n(ICU beds : \nsevere cases)\n -cumulative\n -assuming\n  40% infected")
+severe.cases.per.icu.beds<-severe.cases/hosp.data$icu.beds
+severe.cases.per.icu.beds[which(severe.cases.per.icu.beds==0)]<-NA #switch to NA for plotting purposes
+plot.data<-data.frame("fips"=fips,"dat"=log10(severe.cases.per.icu.beds))
+usmap::plot_usmap(data=plot.data,values = "dat",col=NA)+scale_fill_continuous(low="white",high="darkred",name="log10\n(severe cases : \nICU beds)\n -cumulative\n -assuming\n  40% infected")
 
 ###total severe cases
 plot.data<-data.frame("fips"=fips,"severe.cases"=log10(severe.cases))
@@ -67,3 +67,4 @@ usmap::plot_usmap(data=plot.data,values = "pop",col=NA)+scale_fill_continuous(ty
 ### % population over 60
 plot.data<-data.frame("fips"=fips,"p.60.plus"=(demog$Both.Sexes..Total...60.to.64.years+demog$Both.Sexes..Total...65.to.69.years+demog$Both.Sexes..Total...70.to.74.years+demog$Both.Sexes..Total...75.to.79.years+demog$Both.Sexes..Total...80.to.84.years+demog$Both.Sexes..Total...85.years.and.over)/demog$Both.Sexes..Total)
 usmap::plot_usmap(data=plot.data,values = "p.60.plus",col=NA)+scale_fill_continuous(type="viridis",name="% over 60")
+
