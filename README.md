@@ -10,7 +10,7 @@
 #### See methodological details below for more detailed information.
 ## Preliminary results
 ### Severe cases per ICU bed
-#### Colors show log10 ratio of estimated severe cases in each county to the number of ICU beds in each county after cases have been distributed to healthcare systems. Counties with 0 ICU beds, and thus no capacity to treat severe cases, are shaded grey. Additionally, regions with zero ICU beds may likely impact case and hospital burden in neighboring counties
+#### Colors show log10 ratio of estimated severe cases in each county to the number of ICU beds in each county after cases have been distributed to healthcare systems. Counties with 0 ICU beds, and thus no capacity to treat severe cases, are shaded grey. All severe cases from regions with 0 ICU beds have been allocated to other counties (see methodological notes below).
 ![alt text](https://github.com/ianfmiller/covid19-burden-mapping/blob/master/README.figs/Severe.cases.per.icu.bed.png)
 ### Relative number of severe cases in the US, after distribution to healthcare systems. 
 #### Colors show log10 ratio of estimated severe cases in each county to the average number of severe cases per county in the U.S. Counties with 0 ICU beds, and thus no capacity to treat severe cases, are shaded grey.
@@ -43,7 +43,7 @@
 ### Case distribution
 #### We distributed cases originating in a given county to the healthcare systems of that county and other counties. 
 #### Let the county of origin be denoted as <img src="https://render.githubusercontent.com/render/math?math=c_{0}"> 
-#### and the potential destinatino counties as <img src="https://render.githubusercontent.com/render/math?math=c_{1}...c_{n}">
+#### and the potential destination counties as <img src="https://render.githubusercontent.com/render/math?math=c_{1}...c_{n}">
 #### Let the distance between the county of origin, <img src="https://render.githubusercontent.com/render/math?math=c_{0}">, and each desitnation county, <img src="https://render.githubusercontent.com/render/math?math=c_{i}">, be <img src="https://render.githubusercontent.com/render/math?math=d_{0}(i)">
 #### We considered destination counties with <img src="https://render.githubusercontent.com/render/math?math=d_{0}(i) < 400 km">
 #### We calculated a distance weight, <img src="https://render.githubusercontent.com/render/math?math=z_{i}">, for each county according to the following formula  <img src="https://render.githubusercontent.com/render/math?math=z_{i} = \frac{1}{20} * e^{\frac{d_{0}(i)}{20}}">
