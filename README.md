@@ -7,19 +7,19 @@
 ## Preliminary results
 ### Severe cases per ICU bed
 #### Colors show log10 ratio of severe cases in each county to the number of ICU beds in each county after cases have been distributed to healthcare systems. Counties without ICU beds are shaded grey.
-![alt text](https://github.com/ianfmiller/covid19-burden-mapping/blob/master/README.figs/rel.severe.cases.png)
+![alt text](https://github.com/ianfmiller/covid19-burden-mapping/blob/master/README.figs/Severe.cases.per.icu.bed.png)
 ### Relative number of severe cases in the US, after distribution to healthcare systems. 
 #### Colors show log10 ratio of severe cases in each county to the average number of severe cases per county in the U.S. Counties without ICU beds are shaded grey.
-![alt text](https://github.com/ianfmiller/covid19-burden-mapping/blob/master/README.figs/severe.cases.icu.beds.png)
+![alt text](https://github.com/ianfmiller/covid19-burden-mapping/blob/master/README.figs/rel.severe.cases.post.alloc.png)
 ### Relative number of severe cases in the US, prior to distribution to healthcare systems.
 #### Colors show log10 ratio of severe cases in each county to the average number of severe cases per county in the U.S.
-![alt text](https://github.com/ianfmiller/covid19-burden-mapping/blob/master/README.figs/severe.cases.icu.beds.png)
+![alt text](https://github.com/ianfmiller/covid19-burden-mapping/blob/master/README.figs/rel.severe.cases.pre.alloc.png)
 ### Total ICU beds
 #### Colors show the log10 number of ICU beds per county. Grey indicates no ICU beds.
 ![alt text](https://github.com/ianfmiller/covid19-burden-mapping/blob/master/README.figs/icu.beds.png)
 ### Total Population
 #### Colors show log10 total population.
-![alt text](https://github.com/ianfmiller/covid19-burden-mapping/blob/master/README.figs/tot.population.png)
+![alt text](https://github.com/ianfmiller/covid19-burden-mapping/blob/master/README.figs/population.png)
 ### Total Population
 #### Colors show the percentage of individuals over the age of 60.
 ![alt text](https://github.com/ianfmiller/covid19-burden-mapping/blob/master/README.figs/p.pop.60.plus.png)
