@@ -20,9 +20,9 @@
 ### Total Population
 #### Colors show log10 total population.
 ![alt text](https://github.com/ianfmiller/covid19-burden-mapping/blob/master/README.figs/population.png)
-### Total Population
+### % Population over 60
 #### Colors show the percentage of individuals over the age of 60.
-![alt text](https://github.com/ianfmiller/covid19-burden-mapping/blob/master/README.figs/p.pop.60.plus.png)
+![alt text](https://github.com/ianfmiller/covid19-burden-mapping/blob/master/README.figs/p.pop.over.60.png)
 ## Methodological notes
 #### We calculated the total number of severe cases (those requiring intensive care) in each US county as the sum of severe cases across age classes (0-9,10-19,...,70-79,80+).
 #### For each county, we calculated the cumulative number of severe cases in each age class as the product of the number of individuals in that age class, the cumulative infection rate, the case fatality rate for that age class, and the ratio of severe cases to severe cases resulting in death.
