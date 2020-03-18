@@ -140,13 +140,13 @@ plot.limits <- max(abs(plot.data$dat),na.rm=T)
 usmap::plot_usmap(data=plot.data,values = "dat",col=NA)+scale_fill_gradient2(low="palegoldenrod",mid="orangered",high="darkred",midpoint = 0,na.value='grey60',name="log10(severe cases / mean(severe cases))\nafter allocation to critical care facilities",limits=c(-plot.limits- 0.2,plot.limits + 0.2))+
   theme(legend.position = "top")
 
-###icu beds per severe case
+###severe cases per icu bed
 spread.severe.cases.per.icu.beds<-severe.cases.spread/hosp.data$icu.beds
 spread.severe.cases.per.icu.beds[which(spread.severe.cases.per.icu.beds==0)]<-NA #switch to NA for plotting purposes
 plot.data<-data.frame("fips"=fips,"dat"=log10(spread.severe.cases.per.icu.beds))
 plot.limits <- max(abs(plot.data$dat),na.rm=T)
 mid.point<-min(plot.data$dat,na.rm=T)+ (max(plot.data$dat,na.rm=T)-min(plot.data$dat,na.rm=T))/2
-usmap::plot_usmap(data=plot.data,values = "dat",col=NA)+scale_fill_gradient2(low="palegoldenrod",mid="orangered",high="darkred",midpoint = mid.point,na.value='grey60',name="log10(severe cases per icu bed)\nafter allocation to critical care facilities",limits=c(1.5- 0.2,plot.limits + 0.2))+
+usmap::plot_usmap(data=plot.data,values = "dat",col=NA)+scale_fill_gradient2(low="palegoldenrod",mid="orangered",high="darkred",midpoint = mid.point,na.value='grey60',name="log10(severe cases per icu bed)\nafter allocation to critical care facilities,\nassuming 40% cumulative infection rate",limits=c(1.5- 0.2,plot.limits + 0.2))+
   theme(legend.position = "top")
 
 ###total severe cases
