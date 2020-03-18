@@ -39,14 +39,12 @@
 #### Let the county of origin be denoted as <img src="https://render.githubusercontent.com/render/math?math=c_{0}"> 
 #### and the potential destinatino counties as <img src="https://render.githubusercontent.com/render/math?math=c_{1}...c_{n}">
 #### Let the distance between the county of origin and desitnation county i be <img src="https://render.githubusercontent.com/render/math?math=d_{0}(i)">
-#### We considered desination counties with <img src="https://render.githubusercontent.com/render/math?math=d_{0}(i) < 400 km">
+#### We considered destination counties with <img src="https://render.githubusercontent.com/render/math?math=d_{0}(i) < 400 km">
 #### We calculated a distance weight,z,for each county according to the following formula  <img src="https://render.githubusercontent.com/render/math?math=z_{i} = \frac{1}{20} * e^{\frac{d_{0}(i)}{20}}">
 #### We calculated a bed weight, b, for each county according to the following formula <img src="https://render.githubusercontent.com/render/math?math=b_{i} = "> number of ICU beds in <img src="https://render.githubusercontent.com/render/math?math=c_{i}">
 #### We then calculated a composite weight, w, for each county as  <img src="https://render.githubusercontent.com/render/math?math=w_{i} =\frac{z_{i}}{\sum_{j=0}^{n}  z_{j}} * \frac{b_{i}}{\sum_{j=0}^{n}  b_{j}}">
 #### And finally a relative weight,r, as <img src="https://render.githubusercontent.com/render/math?math=r_{i} = \frac{w_{i}}{\sum_{j=0}^{n}  w_{j}}">
-
-
-#### Need to add
+#### The severe cases originating in <img src="https://render.githubusercontent.com/render/math?math=c_{0}"> are distributed to counties <img src="https://render.githubusercontent.com/render/math?math=c_{0}...c_{n}"> in proportion to <img src="https://render.githubusercontent.com/render/math?math=r_{0}...r_{n}">
 ## Code
 #### Code for all data analysis and plotting is contained in <a href="https://github.com/ianfmiller/covid19-burden-mapping/blob/master/mapping.R">mapping.R</a>
 ## Data sources
