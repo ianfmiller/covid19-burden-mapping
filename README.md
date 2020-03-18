@@ -1,11 +1,11 @@
 # Mapping the burden of COVID-2019
-#### This rapidly developing project is aimed at projecting and mapping the burden of COVID-2019 based on population age distribution and healthcare system capacity. All results are preliminary. Our current efforts have focused on the United States.
+#### This rapidly developing project is aimed at projecting and mapping the burden of COVID-2019 based on population age distribution and healthcare system capacity. All results are preliminary and subject to change as we receive new information. Our current efforts have focused on the United States.
 #### Authors: Ian Miller, Alex Becker, Bryan Grenfell, and Jess Metcalf of Princeton University.
 #### Healthcare officials: If you would like maps of a specific state or region, please contact Ian Miller at ifmiller@princeton.edu
 ## Important Caveats
 #### These preliminary results should be interpreted as rough estimate of where the burden of COVID-19 may be highest rather than as exact projections. However, they could still be used as a set of guidelines for prioritizing resource allocation. 
-#### Currently, our estimates of severe cases per ICU bed assume a cumulative 40% infection rate across all age classes, and homogeneous spread across spacce. The 40% cumulative infection rate is a 'ballpark' estimate that in the short term (next several months) is perhaps pessimistic, but in the long term (beyond) is perhaps optimistic. Our assumption of homogeneous spread is certainly incorrect for the immediate future, but may become more appropriate as the outbreak grows.
-#### We modeled heath care system capacity (number of ICU beds) at the county level. We distributed cases originating within a county to the healthcare systems of that county and of other counties based on distance and relative ICU bed count.
+#### Currently, our estimates of severe cases per ICU bed assume a cumulative 40% infection rate across all age classes, and homogeneous spread across spacce. The 40% cumulative infection rate is a 'ballpark' estimate that in the short term (i.e., next several months) is perhaps pessimistic, but in the long term (i.e., beyond) is perhaps optimistic. Our assumption of homogeneous spread is certainly incorrect for the immediate future, but may become more appropriate as the outbreak grows.
+#### We modeled heath care system capacity (e.g., number of ICU beds) at the county level. We distributed cases originating within a county to the healthcare systems of that county and of other counties based on distance and relative ICU bed count.
 #### See methodological details below for more detailed information.
 ## Preliminary results
 ### Severe cases per ICU bed
@@ -35,7 +35,7 @@
 #### We used a published estimate of the percent of severe cases resulting in a fatality (49%) to calculate the ratio of severe cases to severe cases resulting in death as (1/0.49).
 
 ### Healthcare system capacity
-#### Because we are modeling the burden of severe cases that will require intensive care, we only considered numbers of ICU beds.
+#### Because we are modeling the burden of severe cases that require intensive care, we only considered numbers of ICU beds.
 #### We counted only adult medical/surgical intensive care beds.
 #### We aggregated ICU bed data to the county level for simplicity, and to comply with data use policy.
 
@@ -53,7 +53,7 @@
 ## Code
 #### Code for all data analysis and plotting is contained in <a href="https://github.com/ianfmiller/covid19-burden-mapping/blob/master/mapping.R">mapping.R</a>
 ## Data sources
-#### We used publically available <a href="https://factfinder.census.gov/faces/tableservices/jsf/pages/productview.xhtml?src=bkmk">2018 demography data from the U.S. Census</a>
+#### We used publicly available <a href="https://factfinder.census.gov/faces/tableservices/jsf/pages/productview.xhtml?src=bkmk">2018 demography data from the U.S. Census</a>
 #### We obtained data on hospital location and bed number from the American Hospital Association 2018 annual survey. We aggregated the data by county in accordance with American Hospital Associaiton date use policy.
 #### We used estimates of age specificic case fatality rate from <a href="https://www.medrxiv.org/content/10.1101/2020.03.04.20031104v1">Riou et al. (2020) Adjusted age-specific case fatality ratio during the COVID-19 epidemic in Hubei, China, January and February 2020. medRxiv.</a>
 #### We used an estimate of the % severe cases resulting in death from <a href="https://jamanetwork.com/journals/jama/article-abstract/2762130">Wu and McGoogan (2020). Characteristics of and important lessons from the coronavirus disease 2019 (COVID-19) outbreak in China: summary of a report of 72 314 cases from the Chinese Center for Disease Control and Prevention. JAMA.</a>
