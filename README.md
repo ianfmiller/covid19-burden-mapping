@@ -24,13 +24,28 @@
 #### Colors show the percentage of individuals over the age of 60.
 ![alt text](https://github.com/ianfmiller/covid19-burden-mapping/blob/master/README.figs/p.pop.over.60.png)
 ## Methodological notes
+### Severe case estimation
 #### We calculated the total number of severe cases (those requiring intensive care) in each US county as the sum of severe cases across age classes (0-9,10-19,...,70-79,80+).
 #### For each county, we calculated the cumulative number of severe cases in each age class as the product of the number of individuals in that age class, the cumulative infection rate, the case fatality rate for that age class, and the ratio of severe cases to severe cases resulting in death.
-##### --We assumed a cumulative infection rate of 40% in all age classes and in all locations. The 40% cumulative infeciton rate is a 'ballpark' estimate, that in the short term (next several months) is perhaps pessimistic, but in the long term (beyond) is perhaps optimistic. 
-##### --We used published estimates of age class specific case fatality rates. See data section below for more details.
-##### --We used a published estimate of the percent of severe cases resulting in a fatality (49%) to calculate the ratio of severe cases to severe cases resulting in death as (1/0.49).
-##### --We used our estimates of cumulative severe case numbers, along with demographic data and data on hospital bed availibility to predict the spaital distribution of expected cumulative severe COVID-19 cases in the US.
-#### We distributed cases between counties based on distance and the number of ICU beds. See method notes below.
+#### We assumed a cumulative infection rate of 40% in all age classes and in all locations.
+#### We used published estimates of age class specific case fatality rates. See data section below for more details.
+#### We used a published estimate of the percent of severe cases resulting in a fatality (49%) to calculate the ratio of severe cases to severe cases resulting in death as (1/0.49).
+### Healthcare system capacity
+#### Because we are modeling the burden of severe cases that will require intensive care, we only considered numbers of ICU beds.
+#### We counted only adult medical/surgical intensive care beds.
+#### We aggregated ICU bed data to the county level for simplicity, and to comply with data use policy.
+### Case distribution
+#### We distributed cases originating in a given county to the healthcare systems of that county and other counties. 
+#### Let the county of origin be denoted as <img src="https://render.githubusercontent.com/render/math?math=c_{0}"> 
+#### and the potential destinatino counties as <img src="https://render.githubusercontent.com/render/math?math=c_{1}...c_{n}">
+#### Let the distance between the county of origin and desitnation county i be <img src="https://render.githubusercontent.com/render/math?math=d_{0}(i)">
+#### We considered desination counties with <img src="https://render.githubusercontent.com/render/math?math=d_{0}(i) < 400 km">
+#### We calculated a distance weight,z,for each county according to the following formula  <img src="https://render.githubusercontent.com/render/math?math=z_{i} = \frac{1}{20} * e^{\frac{d_{0}(i)}{20}}">
+#### We calculated a bed weight, b, for each county according to the following formula <img src="https://render.githubusercontent.com/render/math?math=b_{i} = "> number of ICU beds in <img src="https://render.githubusercontent.com/render/math?math=c_{i}">
+#### We then calculated a composite weight, w, for each county as  <img src="https://render.githubusercontent.com/render/math?math=w_{i} =\frac{z_{i}}{\sum_{j=0}^{n}  z_{j}} * \frac{b_{i}}{\sum_{j=0}^{n}  b_{j}}">
+#### And finally a relative weight,r, as <img src="https://render.githubusercontent.com/render/math?math=r_{i} = \frac{w_{i}}{\sum_{j=0}^{n}  w_{j}}">
+
+
 #### Need to add
 ## Code
 #### Code for all data analysis and plotting is contained in <a href="https://github.com/ianfmiller/covid19-burden-mapping/blob/master/mapping.R">mapping.R</a>
