@@ -19,7 +19,7 @@ demog<-demog[order(demog$fips),] #sort by fips code
 
 ###hospital data
 
-hosp.data<-read.csv(text=getURL("https://raw.githubusercontent.com/ianfmiller/covid19-burden-mapping/master/US.hosp.bed.data.csv")) #read from github
+hosp.data<-read.csv("US.hosp.bed.data.csv") #output of clean.hosp.data.R
 hosp.data$fips[which(nchar(hosp.data$fips)==4)]<-paste0("0",hosp.data$fips[which(nchar(hosp.data$fips)==4)]) #correct fips with leading 0s
 hosp.data<-hosp.data[order(hosp.data$fips),]
 
@@ -146,14 +146,14 @@ spread.severe.cases.per.icu.beds[which(spread.severe.cases.per.icu.beds==0)]<-NA
 plot.data<-data.frame("fips"=fips,"dat"=log10(spread.severe.cases.per.icu.beds))
 plot.limits <- max(abs(plot.data$dat),na.rm=T)
 mid.point<-min(plot.data$dat,na.rm=T)+ (max(plot.data$dat,na.rm=T)-min(plot.data$dat,na.rm=T))/2
-usmap::plot_usmap(data=plot.data,values = "dat",col=NA)+scale_fill_gradient2(low="palegoldenrod",mid="orangered",high="darkred",midpoint = mid.point,na.value='grey60',name="log10(severe cases per icu bed)\nafter allocation to critical care facilities,\nassuming 40% cumulative infection rate",limits=c(1.5- 0.2,plot.limits + 0.2))+
+usmap::plot_usmap(data=plot.data,values = "dat",col=NA)+scale_fill_gradient2(low="palegoldenrod",mid="orangered",high="darkred",midpoint = mid.point,na.value='grey60',name="log10(cumulative severe cases per icu bed)\nafter allocation to critical care facilities,\nassuming 40% cumulative infection rate",limits=c(1.5- 0.2,plot.limits + 0.2))+
   theme(legend.position = "top")
 
 ###total severe cases
 plot.data<-data.frame("fips"=fips,"dat"=log10(severe.cases))
 plot.limits <- max(abs(plot.data$dat),na.rm=T)
 mid.point<-min(plot.data$dat,na.rm=T)+ (max(plot.data$dat,na.rm=T)-min(plot.data$dat,na.rm=T))/2
-usmap::plot_usmap(data=plot.data,values = "dat",col=NA)+scale_fill_gradient2(low="palegoldenrod",mid="orangered",high="darkred",midpoint = mid.point,na.value='grey60',name="log10 (severe cases)",limits=c(-0- 0.2,plot.limits + 0.2))+
+usmap::plot_usmap(data=plot.data,values = "dat",col=NA)+scale_fill_gradient2(low="palegoldenrod",mid="orangered",high="darkred",midpoint = mid.point,na.value='grey60',name="log10 (cumulative severe cases)\n assuming 40% cumulative infection rate",limits=c(-0- 0.2,plot.limits + 0.2))+
   theme(legend.position = "top")
 
 ###total ICU beds
