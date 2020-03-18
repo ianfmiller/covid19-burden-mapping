@@ -1,4 +1,4 @@
-# Mapping the burden of COVID-2019.
+# Mapping the burden of COVID-2019
 #### This rapidly developing project is aimed at projecting and mapping the burden of COVID-2019 based on population age distribution and healthcare system capacity. All results are preliminary. Our current efforts have focused on the United States.
 #### Authors: Ian Miller, Alex Becker, Bryan Grenfell, and Jess Metcalf of Princeton University.
 ## Important Caveats
