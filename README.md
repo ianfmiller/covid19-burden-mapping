@@ -2,6 +2,7 @@
 #### This rapidly developing project is aimed at projecting and mapping the burden of COVID-2019 based on population age distribution and healthcare system capacity. All results are preliminary and subject to change as we receive new information. Our current efforts have focused on the United States.
 #### Authors: Ian Miller, Alex Becker, Bryan Grenfell, and Jess Metcalf of Princeton University.
 #### Healthcare officials: If you would like maps of a specific state or region, please contact Ian Miller at ifmiller(at)princeton(dot)edu
+#### Please feel free to adapt, refine, and send corrections.
 ## Important Caveats
 #### These preliminary results should be interpreted as rough estimate of where the burden of COVID-19 may be highest rather than as exact projections. However, they could still be used as a set of guidelines for prioritizing resource allocation. 
 #### Currently, our estimates of severe cases per ICU bed assume a cumulative 40% infection rate across all age classes, and homogeneous spread across space. The 40% cumulative infection rate is a 'ballpark' estimate that in the short term (i.e., next several months) is perhaps pessimistic, but in the long term (i.e., beyond) is perhaps optimistic. Our assumption of homogeneous spread is certainly incorrect for the immediate future, but may become more appropriate as the outbreak grows.
@@ -51,9 +52,10 @@
 #### And finally a relative weight for each county, <img src="https://render.githubusercontent.com/render/math?math=r_{i}"> , as <img src="https://render.githubusercontent.com/render/math?math=r_{i} = \frac{w_{i}}{\sum_{j=0}^{n}  w_{j}}">
 #### The severe cases originating in <img src="https://render.githubusercontent.com/render/math?math=c_{0}"> are distributed to counties <img src="https://render.githubusercontent.com/render/math?math=c_{0}...c_{n}"> in proportion to <img src="https://render.githubusercontent.com/render/math?math=r_{0}...r_{n}">
 ## Code
-#### Code for all data analysis and plotting is contained in <a href="https://github.com/ianfmiller/covid19-burden-mapping/blob/master/mapping.R">mapping.R</a>
+#### Code for all data analysis and plotting is contained in <a href="https://github.com/ianfmiller/covid19-burden-mapping/blob/master/mapping.R">mapping.R</a> 
+#### Code for generating the hospital bed data file for use in plotting is contained in <a href="https://github.com/ianfmiller/covid19-burden-mapping/blob/master/clean.hosp.data.R">clean.hosp.data.R</a> Unfortunately, American Hospital Association policy prevents us from posting the cleaned and aggregated data that this file generates. If you are able to access the 2018 AHA Survey Database, the raw file needed for this code is "AS2018FULLFILE.csv" in '/2018 AHA survey/COMMA/'
 ## Data sources
 #### We used publicly available <a href="https://factfinder.census.gov/faces/tableservices/jsf/pages/productview.xhtml?src=bkmk">2018 demography data from the U.S. Census</a>
-#### We obtained data on hospital location and bed number from the American Hospital Association 2018 annual survey. We aggregated the data by county in accordance with American Hospital Associaiton date use policy.
+#### We obtained data on hospital location and bed number from the American Hospital Association 2018 annual survey. We aggregated the data by county in accordance with American Hospital Associaiton date use policy. Unfortunately, these data are behind a paywall. 
 #### We used estimates of age specificic case fatality rate from <a href="https://www.medrxiv.org/content/10.1101/2020.03.04.20031104v1">Riou et al. (2020) Adjusted age-specific case fatality ratio during the COVID-19 epidemic in Hubei, China, January and February 2020. medRxiv.</a>
 #### We used an estimate of the % severe cases resulting in death from <a href="https://jamanetwork.com/journals/jama/article-abstract/2762130">Wu and McGoogan (2020). Characteristics of and important lessons from the coronavirus disease 2019 (COVID-19) outbreak in China: summary of a report of 72 314 cases from the Chinese Center for Disease Control and Prevention. JAMA.</a>
