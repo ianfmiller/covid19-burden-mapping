@@ -12,7 +12,7 @@
 #### Colors show log10 ratio of estimated severe cases in each county to the number of ICU beds in each county after cases have been distributed to healthcare systems. Counties without ICU beds are shaded grey.
 ![alt text](https://github.com/ianfmiller/covid19-burden-mapping/blob/master/README.figs/Severe.cases.per.icu.bed.png)
 ### Relative number of severe cases in the US, after distribution to healthcare systems. 
-#### Colors show estimated log10 ratio of severe cases in each county to the average number of severe cases per county in the U.S. Counties without ICU beds are shaded grey.
+#### Colors show log10 ratio of estimated severe cases in each county to the average number of severe cases per county in the U.S. Counties without ICU beds are shaded grey.
 ![alt text](https://github.com/ianfmiller/covid19-burden-mapping/blob/master/README.figs/rel.severe.cases.post.alloc.png)
 ### Estimated relative number of severe cases in the US, prior to distribution to healthcare systems.
 #### Colors show log10 ratio of estimated severe cases in each county to the average number of severe cases per county in the U.S.
