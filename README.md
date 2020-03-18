@@ -30,10 +30,12 @@
 #### We assumed a cumulative infection rate of 40% in all age classes and in all locations.
 #### We used published estimates of age class specific case fatality rates. See data section below for more details.
 #### We used a published estimate of the percent of severe cases resulting in a fatality (49%) to calculate the ratio of severe cases to severe cases resulting in death as (1/0.49).
+
 ### Healthcare system capacity
 #### Because we are modeling the burden of severe cases that will require intensive care, we only considered numbers of ICU beds.
 #### We counted only adult medical/surgical intensive care beds.
 #### We aggregated ICU bed data to the county level for simplicity, and to comply with data use policy.
+
 ### Case distribution
 #### We distributed cases originating in a given county to the healthcare systems of that county and other counties. 
 #### Let the county of origin be denoted as <img src="https://render.githubusercontent.com/render/math?math=c_{0}"> 
