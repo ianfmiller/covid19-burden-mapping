@@ -1,25 +1,19 @@
 # Mapping the burden of COVID-2019.
-#### This is a rapidly developing projected aimed at projecting and mapping the burden of COVID-2019. Our current efforts have focused on the U.S. but we hope to expand our analyses to the rest of the world.
-## Overview
-#### Currently, our estimates of severe case burden are cumulative. We are currently working incoroporate predictions from an age structured epidemiological model in order to add a time course to our prediction. 
-#### We calculated the total number of severe cases (those requiring intensive care) in each US county as the sum of severe cases across age classes (0-9,10-19,...,70-79,80+).
-#### For each county, we calculated the cumulative number of severe cases in each age class as the product of the number of individuals in that age class, the cumulative infection rate, the case fatality rate for that age class, and the ratio of severe cases to severe cases resulting in death.
-##### --We assumed a cumulative infection rate of 40% in all age classes and in all locations. The 40% cumulative infeciton rate is a 'ballpark' estimate, that in the short term (next several months) is perhaps pessimistic, but in the long term (beyond) is perhaps optimistic. 
-##### --We used published estimates of age class specific case fatality rates. See data section below for more details.
-##### --We used a published estimate of the percent of severe cases resulting in a fatality (49%) to calculate the ratio of severe cases to severe cases resulting in death as (1/0.49).
-##### --We used our estimates of cumulative severe case numbers, along with demographic data and data on hospital bed availibility to predict the spaital distribution of expected cumulative severe COVID-19 cases in the US.
-#### We distributed cases between counties based on distance and the number of ICU beds. See method notes below.
+#### This is a rapidly developing project aimed at projecting and mapping the burden of COVID-2019 based on population age distribution and healthcare system capacity. Our current efforts have focused on the U.S.
+## Important Caveats
+#### Currently, our estimates of severe cases per ICU bed assume a cumulative 40% infection rate across all age classes, and homogeneous spread across spacce. The 40% cumulative infeciton rate is a 'ballpark' estimate, that in the short term (next several months) is perhaps pessimistic, but in the long term (beyond) is perhaps optimistic. Our assumption of homogeneous spread is certainly incorrect for the immediate future, but may become more appropriate as the outbreak grows.
+#### We modeled heath care system capacity (number of ICU beds) at the county level. We distributed cases originating within a county to the healthcare systems of that county and of other counties based on distance and relative ICU bed count.
+#### See methodological details below for more detailed information.
 ## Preliminary results
-### Relative number of severe cases in the US
-#### Colors show log10 ratio of severe cases in each county to the average number of severe cases per county in the U.S.
-![alt text](https://github.com/ianfmiller/covid19-burden-mapping/blob/master/README.figs/rel.severe.cases.png)
 ### Severe cases per ICU bed
-#### Colors show log10 ratio of severe cases in each county to the number of ICU beds in each county. Counties without ICU beds are shaded grey.
-#### This figure gives an incomplete picture of case burden per ICU bed, becasuse cases from counties without ICU beds are not accounted for. We are currently working to smooth cases/ICU beds across counties so that all cases will be accounted for.
+#### Colors show log10 ratio of severe cases in each county to the number of ICU beds in each county after cases have been distributed to healthcare systems. Counties without ICU beds are shaded grey.
+![alt text](https://github.com/ianfmiller/covid19-burden-mapping/blob/master/README.figs/rel.severe.cases.png)
+### Relative number of severe cases in the US, after distribution to healthcare systems. 
+#### Colors show log10 ratio of severe cases in each county to the average number of severe cases per county in the U.S. Counties without ICU beds are shaded grey.
 ![alt text](https://github.com/ianfmiller/covid19-burden-mapping/blob/master/README.figs/severe.cases.icu.beds.png)
-### Total severe cases
-#### Colors show the log10 number of cumulative severe cases per county. As stated above, these cumulative case counts are calculated assuming that of all individuals in each age class are infected.
-![alt text](https://github.com/ianfmiller/covid19-burden-mapping/blob/master/README.figs/tot.severe.cases.png)
+### Relative number of severe cases in the US, prior to distribution to healthcare systems.
+#### Colors show log10 ratio of severe cases in each county to the average number of severe cases per county in the U.S.
+![alt text](https://github.com/ianfmiller/covid19-burden-mapping/blob/master/README.figs/severe.cases.icu.beds.png)
 ### Total ICU beds
 #### Colors show the log10 number of ICU beds per county. Grey indicates no ICU beds.
 ![alt text](https://github.com/ianfmiller/covid19-burden-mapping/blob/master/README.figs/icu.beds.png)
@@ -29,8 +23,14 @@
 ### Total Population
 #### Colors show the percentage of individuals over the age of 60.
 ![alt text](https://github.com/ianfmiller/covid19-burden-mapping/blob/master/README.figs/p.pop.60.plus.png)
-## Method notes
-### Case distribution algorithm
+## Methodological notes
+#### We calculated the total number of severe cases (those requiring intensive care) in each US county as the sum of severe cases across age classes (0-9,10-19,...,70-79,80+).
+#### For each county, we calculated the cumulative number of severe cases in each age class as the product of the number of individuals in that age class, the cumulative infection rate, the case fatality rate for that age class, and the ratio of severe cases to severe cases resulting in death.
+##### --We assumed a cumulative infection rate of 40% in all age classes and in all locations. The 40% cumulative infeciton rate is a 'ballpark' estimate, that in the short term (next several months) is perhaps pessimistic, but in the long term (beyond) is perhaps optimistic. 
+##### --We used published estimates of age class specific case fatality rates. See data section below for more details.
+##### --We used a published estimate of the percent of severe cases resulting in a fatality (49%) to calculate the ratio of severe cases to severe cases resulting in death as (1/0.49).
+##### --We used our estimates of cumulative severe case numbers, along with demographic data and data on hospital bed availibility to predict the spaital distribution of expected cumulative severe COVID-19 cases in the US.
+#### We distributed cases between counties based on distance and the number of ICU beds. See method notes below.
 #### Need to add
 ## Code
 #### Code for all data analysis and plotting is contained in <a href="https://github.com/ianfmiller/covid19-burden-mapping/blob/master/mapping.R">mapping.R</a>
