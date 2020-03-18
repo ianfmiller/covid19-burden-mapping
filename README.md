@@ -1,7 +1,7 @@
 # Mapping the burden of COVID-2019
 #### This rapidly developing project is aimed at projecting and mapping the burden of COVID-2019 based on population age distribution and healthcare system capacity. All results are preliminary and subject to change as we receive new information. Our current efforts have focused on the United States.
 #### Authors: Ian Miller, Alex Becker, Bryan Grenfell, and Jess Metcalf of Princeton University.
-#### Healthcare officials: If you would like maps of a specific state or region, please contact Ian Miller at ifmiller@princeton.edu
+#### Healthcare officials: If you would like maps of a specific state or region, please contact Ian Miller at ifmiller(at)princeton(dot)edu
 ## Important Caveats
 #### These preliminary results should be interpreted as rough estimate of where the burden of COVID-19 may be highest rather than as exact projections. However, they could still be used as a set of guidelines for prioritizing resource allocation. 
 #### Currently, our estimates of severe cases per ICU bed assume a cumulative 40% infection rate across all age classes, and homogeneous spread across space. The 40% cumulative infection rate is a 'ballpark' estimate that in the short term (i.e., next several months) is perhaps pessimistic, but in the long term (i.e., beyond) is perhaps optimistic. Our assumption of homogeneous spread is certainly incorrect for the immediate future, but may become more appropriate as the outbreak grows.
