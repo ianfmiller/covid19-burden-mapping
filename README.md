@@ -19,7 +19,7 @@
 #### See methodological details below for more detailed information.
 ## Preliminary results
 ### Cumulative ICU admits per ICU bed
-#### Colors show log10 ratio of estimated critical cases to ICU beds in each county after cases have been distributed to healthcare systems. Counties with 0 ICU beds, and thus no capacity to treat critical cases, are shaded grey. All severe cases from regions with 0 ICU beds have been allocated to other counties (see methodological notes below).
+#### Colors show log10 ratio of estimated critical cases to ICU beds in each county after cases have been distributed to healthcare systems. Counties with 0 ICU beds, and thus no capacity to treat critical cases, are shaded grey. All cases from regions with 0 ICU beds have been allocated to other counties (see methodological notes below).
 #### Interpretation notes: This figure gives a reasonable picture of where the burden of cricical cases might be highest relative to healthsystem capacity.
 ![alt text](https://github.com/ianfmiller/covid19-burden-mapping/blob/master/README.figs/icu.per.bed.png)
 ### Cumulative hospitalizations per hospital bed
