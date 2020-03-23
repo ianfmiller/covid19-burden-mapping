@@ -178,7 +178,7 @@ hosp.per.capita<-hosp.cases/demog$Both.Sexes..Total
 plot.data<-data.frame("fips"=fips,"dat"=hosp.per.capita)
 plot.limits <- max(plot.data$dat,na.rm=T)
 mid.point<-min(plot.data$dat,na.rm=T)+ (max(plot.data$dat,na.rm=T)-min(plot.data$dat,na.rm=T))/2
-usmap::plot_usmap(data=plot.data,values = "dat",col=NA)+scale_fill_gradient2(low="palegoldenrod",mid="orangered",high="darkred",midpoint = mid.point,na.value='grey60',name="projected hospitalizations per capita\nassuming 80% cumulative infection rate, 50% symptom rate  ",limits=c(min(plot.data$dat),plot.limits))+
+usmap::plot_usmap(data=plot.data,values = "dat",col=NA)+scale_fill_gradient2(low="palegoldenrod",mid="orangered",high="darkred",midpoint = mid.point,na.value='grey60',name="projected hospitalizations per capita\nassuming 40% cumulative infection rate, 50% symptom rate  ",limits=c(min(plot.data$dat),plot.limits))+
   theme(legend.position = "top")
 
 ###relative burden of ICU admits before allocation to healthsystems
@@ -219,7 +219,7 @@ plot.data<-data.frame("fips"=fips,"dat"=log10(spread.hospitalizations.per.bed))
 plot.max <- max(plot.data$dat,na.rm=T)
 plot.min<-min(plot.data$dat,na.rm=T)
 mid.point<-min(plot.data$dat,na.rm=T)+ (max(plot.data$dat,na.rm=T)-min(plot.data$dat,na.rm=T))/2
-usmap::plot_usmap(data=plot.data,values = "dat",col=NA)+scale_fill_gradient2(low="palegoldenrod",mid="orangered",high="darkred",midpoint = mid.point,na.value='grey60',name="projected log10(hospitalizaitons per hospital bed)\nafter allocation to hospitals,\nassuming 80% cumulative infection rate, 50% symptom rate",limits=c(plot.min,plot.max))+
+usmap::plot_usmap(data=plot.data,values = "dat",col=NA)+scale_fill_gradient2(low="palegoldenrod",mid="orangered",high="darkred",midpoint = mid.point,na.value='grey60',name="projected log10(hospitalizaitons per hospital bed)\nafter allocation to hospitals,\nassuming 40% cumulative infection rate, 50% symptom rate",limits=c(plot.min,plot.max))+
   theme(legend.position = "top")
 
 ###ICU admits per ICU bed
@@ -229,7 +229,7 @@ plot.data<-data.frame("fips"=fips,"dat"=log10(spread.ICU.per.bed))
 plot.max <- max(plot.data$dat,na.rm=T)
 plot.min<-min(plot.data$dat,na.rm=T)
 mid.point<-min(plot.data$dat,na.rm=T)+ (max(plot.data$dat,na.rm=T)-min(plot.data$dat,na.rm=T))/2
-usmap::plot_usmap(data=plot.data,values = "dat",col=NA)+scale_fill_gradient2(low="palegoldenrod",mid="orangered",high="darkred",midpoint = mid.point,na.value='grey60',name="projected log10(ICU admits per ICU bed)\nafter allocation to critical care facilities,\nassuming 80% cumulative infection rate, 50% symptom rate",limits=c(plot.min,plot.max))+
+usmap::plot_usmap(data=plot.data,values = "dat",col=NA)+scale_fill_gradient2(low="palegoldenrod",mid="orangered",high="darkred",midpoint = mid.point,na.value='grey60',name="projected log10(ICU admits per ICU bed)\nafter allocation to critical care facilities,\nassuming 40% cumulative infection rate, 50% symptom rate",limits=c(plot.min,plot.max))+
   theme(legend.position = "top")
 
 
