@@ -3,6 +3,7 @@
 #### Authors: Ian Miller, Alex Becker, Bryan Grenfell, and Jess Metcalf of Princeton University.
 #### Healthcare officials: If you would like maps of a specific state or region, please contact Ian Miller at ifmiller(at)princeton(dot)edu
 #### Please feel free to adapt, refine, and send corrections.
+#### We are currently exploring methods of accounting for differences among susceptibility, transmission, and/or contact patterns between age classes, and for incorporating the effects of comorbidities (hypertension, diabetes, etc).
 ## Important Caveats
 #### These preliminary results should be interpreted as rough estimate of where the burden of COVID-19 may be highest rather than as exact projections. However, they could still be used as a set of guidelines for prioritizing resource allocation. 
 #### Currently, our estimates assume:
@@ -38,7 +39,7 @@
 ### Relative Hospitalizations
 #### Colors show the relative number of hospitalizations in each county (prior to distribution to healthcare systems).
 ![alt text](https://github.com/ianfmiller/covid19-burden-mapping/blob/master/README.figs/rel.hosp.pre.alloc.png)
-
+### <a href="https://github.com/ianfmiller/covid19-burden-mapping/blob/master/extended.results.md">More visualizations available here.</a>
 ## Methodological notes
 ### Case estimation
 #### We calculated the total number of cases requireding hospitalization/ICU admits in each US county as the sum of cases requiring hospitalization/ICU admission across age classes (0-9,10-19,...,70-79,80+).
