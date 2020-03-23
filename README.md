@@ -12,7 +12,7 @@
 ##### 2) equal odds of infection across all age classes, 
 ######   Currently, cases appear to be distributed non-uniformly across age classes. However, given the multitude of non-exclusive hypotheses about what could account for this pattern, and the dearth of data necessary to test them, we proceed cautiously while making the simplifying assumption of equal risk across age classes. This is an aspect of our methods that we are actively working to improve. 
 ##### 3) an asymptomatic rate of 20% in each age class,
-######   Evidence about the percentage of infections that produce symptoms and the variation or lack thereof across age classes is still scarce. This estimate is consistent with the best availible data (<a href="https://www.medrxiv.org/content/10.1101/2020.03.19.20039107v1">Zhang et al.</a>, but also see <a href="https://www.niid.go.jp/niid/en/2019-ncov-e/9407-covid-dp-fe-01.html">this report</a>). 
+######   Evidence about the percentage of infections that produce symptoms and the variation or lack thereof across age classes is still scarce. This estimate is consistent with the best available data (<a href="https://www.medrxiv.org/content/10.1101/2020.03.19.20039107v1">Zhang et al.</a>, but also see <a href="https://www.niid.go.jp/niid/en/2019-ncov-e/9407-covid-dp-fe-01.html">this report</a>).
 ##### and 4) homogeneous spread across space. 
 ######   This assumption, which we make for convenience, is certainly incorrect for the immediate future, but may become more appropriate as the outbreak grows. As we aim to predict long term patterns of disease burden, this assumption is reasonable.
 
