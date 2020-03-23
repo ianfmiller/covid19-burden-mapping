@@ -40,7 +40,7 @@
 ![alt text](https://github.com/ianfmiller/covid19-burden-mapping/blob/master/README.figs/rel.hosp.pre.alloc.png)
 
 ## Methodological notes
-### Severe case estimation
+### Case estimation
 #### We calculated the total number of cases requireding hospitalization/ICU admits in each US county as the sum of cases requiring hospitalization/ICU admission across age classes (0-9,10-19,...,70-79,80+).
 #### For each county, we calculated the cumulative number of hospitalizations or ICU admits in each age class as the product of the number of individuals in that age class, the cumulative infection rate, and either the hospitalizaiton rate or the hospitalizaiton rate times the ICU admit rate given hospitalization.
 #### We assumed a cumulative infection rate of 40% in all age classes and in all locations.
