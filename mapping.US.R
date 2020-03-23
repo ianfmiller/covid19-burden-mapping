@@ -193,7 +193,7 @@ icu.per.capita<-ICU.cases/demog$Both.Sexes..Total
 plot.data<-data.frame("fips"=fips,"dat"=icu.per.capita)
 plot.limits <- max(plot.data$dat,na.rm=T)
 mid.point<-min(plot.data$dat,na.rm=T)+ (max(plot.data$dat,na.rm=T)-min(plot.data$dat,na.rm=T))/2
-usmap::plot_usmap(data=plot.data,values = "dat",col=NA)+scale_fill_gradient2(low="palegoldenrod",mid="orangered",high="darkred",midpoint = mid.point,na.value='grey60',name="projected ICU admits per capita\nassuming 80% cumulative infection rate, 50% symptom rate     ",limits=c(min(plot.data$dat),plot.limits))+
+usmap::plot_usmap(data=plot.data,values = "dat",col=NA)+scale_fill_gradient2(low="palegoldenrod",mid="orangered",high="darkred",midpoint = mid.point,na.value='grey60',name="projected ICU admits per capita\nassuming 40% cumulative infection rate, 50% symptom rate     ",limits=c(min(plot.data$dat),plot.limits))+
   theme(legend.position = "top")
 
 ###relative burden of hospitalizations after allocation to healthsystems
