@@ -32,10 +32,10 @@
 ### Hospitalizations per capita 
 #### Colors show the number of hospitalizations per person in each county (prior to distribution to healthcare systems).
 ![alt text](https://github.com/ianfmiller/covid19-burden-mapping/blob/master/README.figs/hosp.per.capita.png)
-### ICU admits
+### Relative ICU admits
 #### Colors show the relative number of ICU admits in each county (prior to distribution to healthcare systems).
 ![alt text](https://github.com/ianfmiller/covid19-burden-mapping/blob/master/README.figs/rel.icu.pre.alloc.png)
-### Hospitalizations
+### Relative Hospitalizations
 #### Colors show the relative number of hospitalizations in each county (prior to distribution to healthcare systems).
 ![alt text](https://github.com/ianfmiller/covid19-burden-mapping/blob/master/README.figs/rel.hosp.pre.alloc.png)
 
