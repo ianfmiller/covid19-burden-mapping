@@ -115,7 +115,7 @@ for (i in age.class.columns)
 }
 colnames(demog.binned)<-age.classes
 
-p.infected<-.8 #ballpark estimate
+p.infected<-.4 #ballpark estimate
 p.symptomatic<-.5 #ballpark estimate, same for all age classes
 hosp.rates<-c(.001,.003,.012,.032,.049,.102,.166,.243,.273) #data https://www.imperial.ac.uk/media/imperial-college/medicine/sph/ide/gida-fellowships/Imperial-College-COVID19-NPI-modelling-16-03-2020.pdf
 icu.rates.given.hosp<-c(.05,.05,.05,.05,.063,.122,.274,.432,.709) #data https://www.imperial.ac.uk/media/imperial-college/medicine/sph/ide/gida-fellowships/Imperial-College-COVID19-NPI-modelling-16-03-2020.pdf
@@ -178,14 +178,14 @@ hosp.per.capita<-hosp.cases/demog$Both.Sexes..Total
 plot.data<-data.frame("fips"=fips,"dat"=hosp.per.capita)
 plot.limits <- max(plot.data$dat,na.rm=T)
 mid.point<-min(plot.data$dat,na.rm=T)+ (max(plot.data$dat,na.rm=T)-min(plot.data$dat,na.rm=T))/2
-usmap::plot_usmap(data=plot.data,values = "dat",col=NA)+scale_fill_gradient2(low="blue",mid="white",high="red",midpoint = mid.point,na.value='grey60',name="projected hospitalizations per capita\nassuming 80% cumulative infection rate, 50% symptom rate  ",limits=c(0,plot.limits))+
+usmap::plot_usmap(data=plot.data,values = "dat",col=NA)+scale_fill_gradient2(low="palegoldenrod",mid="orangered",high="darkred",midpoint = mid.point,na.value='grey60',name="projected hospitalizations per capita\nassuming 80% cumulative infection rate, 50% symptom rate  ",limits=c(min(plot.data$dat),plot.limits))+
   theme(legend.position = "top")
 
 ###relative burden of ICU admits before allocation to healthsystems
 rel.severe.cases<-ICU.cases/mean(ICU.cases)
 plot.data<-data.frame("fips"=fips,"dat"=log10(rel.severe.cases))
 plot.limits <- max(abs(plot.data$dat),na.rm=T)
-usmap::plot_usmap(data=plot.data,values = "dat",col=NA)+scale_fill_gradient2(low="palegoldenrod",mid="orangered",high="darkred",midpoint = 0,na.value='grey60',name="projected log10(hospitalizations / mean(hospitalizations))",limits=c(-plot.limits - 0.2,plot.limits + 0.2))+
+usmap::plot_usmap(data=plot.data,values = "dat",col=NA)+scale_fill_gradient2(low="palegoldenrod",mid="orangered",high="darkred",midpoint = 0,na.value='grey60',name="projected log10(ICU admits / mean(ICU admits))",limits=c(-plot.limits - 0.2,plot.limits + 0.2))+
   theme(legend.position = "top")
 
 ###burden of ICU admits per capita before allocation to healthsystems
@@ -193,7 +193,7 @@ icu.per.capita<-ICU.cases/demog$Both.Sexes..Total
 plot.data<-data.frame("fips"=fips,"dat"=icu.per.capita)
 plot.limits <- max(plot.data$dat,na.rm=T)
 mid.point<-min(plot.data$dat,na.rm=T)+ (max(plot.data$dat,na.rm=T)-min(plot.data$dat,na.rm=T))/2
-usmap::plot_usmap(data=plot.data,values = "dat",col=NA)+scale_fill_gradient2(low="blue",mid="white",high="red",midpoint = mid.point,na.value='grey60',name="projected ICU admits per capita\nassuming 80% cumulative infection rate, 50% symptom rate     ",limits=c(0,plot.limits))+
+usmap::plot_usmap(data=plot.data,values = "dat",col=NA)+scale_fill_gradient2(low="palegoldenrod",mid="orangered",high="darkred",midpoint = mid.point,na.value='grey60',name="projected ICU admits per capita\nassuming 80% cumulative infection rate, 50% symptom rate     ",limits=c(min(plot.data$dat),plot.limits))+
   theme(legend.position = "top")
 
 ###relative burden of hospitalizations after allocation to healthsystems
@@ -201,7 +201,7 @@ rel.hosp.cases.spread<-hosp.cases.spread/mean(hosp.cases.spread)
 plot.data<-data.frame("fips"=fips,"dat"=log10(rel.hosp.cases.spread))
 plot.data[which(plot.data$da< -1e6),"dat"]<-NA
 plot.limits <- max(abs(plot.data$dat),na.rm=T)
-usmap::plot_usmap(data=plot.data,values = "dat",col=NA)+scale_fill_gradient2(low="palegoldenrod",mid="orangered",high="darkred",midpoint = 0,na.value='grey60',name="projected log10(hospitalizations / mean(hospitalizations))\nafter allocation to hospitals",limits=c(-plot.limits- 0.2,plot.limits + 0.2))+
+usmap::plot_usmap(data=plot.data,values = "dat",col=NA)+scale_fill_gradient2(low="palegoldenrod",mid="orangered",high="darkred",midpoint = 0,na.value='grey60',name="projected log10(hospitalizations / mean(hospitalizations))\nafter allocation to hospitals",limits=c(min(plot.data$dat,na.rm=T),plot.limits))+
   theme(legend.position = "top")
 
 ###relative burden of ICU admits after allocation to healthsystems
@@ -209,7 +209,7 @@ rel.ICU.cases.spread<-ICU.cases.spread/mean(ICU.cases.spread)
 plot.data<-data.frame("fips"=fips,"dat"=log10(rel.ICU.cases.spread))
 plot.data[which(plot.data$da< -1e6),"dat"]<-NA
 plot.limits <- max(abs(plot.data$dat),na.rm=T)
-usmap::plot_usmap(data=plot.data,values = "dat",col=NA)+scale_fill_gradient2(low="palegoldenrod",mid="orangered",high="darkred",midpoint = 0,na.value='grey60',name="projected log10(ICU admits / mean(ICU admits))\nafter allocation to critical care facilities",limits=c(-plot.limits- 0.2,plot.limits + 0.2))+
+usmap::plot_usmap(data=plot.data,values = "dat",col=NA)+scale_fill_gradient2(low="palegoldenrod",mid="orangered",high="darkred",midpoint = 0,na.value='grey60',name="projected log10(ICU admits / mean(ICU admits))\nafter allocation to critical care facilities",limits=c(min(plot.data$dat,na.rm=T),plot.limits))+
   theme(legend.position = "top")
 
 ###hospitalizations per hospital bed
