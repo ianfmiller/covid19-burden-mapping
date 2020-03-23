@@ -75,17 +75,21 @@ allocate.cases<-function(county.fips,dist.50=20,max.dist=400,weight.dist=.1,bed.
 age.classes<-c("0-9","10-19","20-29","30-39","40-49","50-59","60-69","70-79","80plus")
 age.class.columns<-list(c(8,11),c(14,17),c(20,23),c(26,29),c(32,35),c(38,41),c(44,47),c(50,53),c(56,59))#columns of demog corresponding to N people within each age class
 
-transfer.mat<-matrix(NA,length(fips),length(fips)) #rows are source fips, columns are destination fips
-colnames(transfer.mat)<-fips
-rownames(transfer.mat)<-fips
+get.transfer.mat<-function(bed.weight.metric="icu.beds")
+{  
+  transfer.mat<-matrix(NA,length(fips),length(fips)) #rows are source fips, columns are destination fips
+  colnames(transfer.mat)<-fips
+  rownames(transfer.mat)<-fips
 
-for (f in 1:length(fips))
-{
-  source.fips<-fips[f]
-  p.out.cases<-allocate.cases(county.fips = source.fips)
-  out.cases.row<-rep((0),times=length(fips))
-  out.cases.row[c(match(p.out.cases$fips,fips))]<-p.out.cases$rel.weights
-  transfer.mat[f,]<-out.cases.row
+  for (f in 1:length(fips))
+    {
+      source.fips<-fips[f]
+      p.out.cases<-allocate.cases(county.fips = source.fips,bed.weight.metric = bed.weight.metric)
+      out.cases.row<-rep((0),times=length(fips))
+      out.cases.row[c(match(p.out.cases$fips,fips))]<-p.out.cases$rel.weights
+      transfer.mat[f,]<-out.cases.row
+    }
+  transfer.mat
 }
 
 incoming<-function(dest.fips,data) #function to calculate total number of cases transfered to a fips area, including from within that fips area
@@ -111,49 +115,47 @@ for (i in age.class.columns)
 }
 colnames(demog.binned)<-age.classes
 
-p.infected<-.4 #ballpark estimate
-CFR <- c(.000094,.0000022,.0000091,.0018,.004,.013,.046,.098,.18) #data from https://www.medrxiv.org/content/10.1101/2020.03.04.20031104v1?__cf_chl_jschl_tk__=16ce8eb7d0f21ba0cf7f0e5c1e9ab3f05537f09d-1584455815-0-ATLBRAXQNjuKRpD1hwkdoXSA3GaNegxuQ5uze61iEmwJmJdpq81lzSyQYylBjmm21ep3aMVJPHjCPXJ03OuxPYSiQY-vlQmWcGumX9M1bPOangVdOhpyV7RbqI1Bo9xIuZDi6uqKf9ww2cM446ZJ4WdlJ7frJkQRLCqYREJaJgSXLh55iziDQpg0MEZcQsRr2SVw-Vnfea_IUb5bNMva6Q1iOAxBSD-71HBfOzIgOhatk1rlDQ_fZT79XEa21cDuYf_xfoYbyaaEfuuqMNRa6m48hGYdIQ42f-EaKyBMBINrVf8vlBbzThuhd1lzqLUfMNUMg_HyFeOcZxOb-uwj_JA
-CFR.severe.cases<-.49 #data point from https://jamanetwork.com/journals/jama/article-abstract/2762130
+p.infected<-.8 #ballpark estimate
+p.symptomatic<-.5 #ballpark estimate, same for all age classes
+hosp.rates<-c(.001,.003,.012,.032,.049,.102,.166,.243,.273) #data https://www.imperial.ac.uk/media/imperial-college/medicine/sph/ide/gida-fellowships/Imperial-College-COVID19-NPI-modelling-16-03-2020.pdf
+icu.rates.given.hosp<-c(.05,.05,.05,.05,.063,.122,.274,.432,.709) #data https://www.imperial.ac.uk/media/imperial-college/medicine/sph/ide/gida-fellowships/Imperial-College-COVID19-NPI-modelling-16-03-2020.pdf
+IFR <- c(.00002,.00006,.0003,.0008,.0015,.006,.022,.051,.093) #data https://www.imperial.ac.uk/media/imperial-college/medicine/sph/ide/gida-fellowships/Imperial-College-COVID19-NPI-modelling-16-03-2020.pdf
 
-severe.cases<-rowSums(demog.binned*p.infected*CFR*(1/CFR.severe.cases))
+population<-rowSums(demog.binned)
+hosp.cases<-rowSums(p.infected*demog.binned*hosp.rates)
+ICU.cases<-rowSums(p.infected*demog.binned*hosp.rates*icu.rates.given.hosp)
+fatalities<-rowSums(p.infected*demog.binned*IFR)
 
-severe.cases.spread<-unlist(lapply(fips, incoming,data=severe.cases))
+transfer.mat<-get.transfer.mat(bed.weight.metric="calc.tot.beds")
+hosp.cases.spread<-unlist(lapply(fips, incoming,data=hosp.cases))
+transfer.mat<-get.transfer.mat(bed.weight.metric="icu.beds")
+ICU.cases.spread<-unlist(lapply(fips, incoming,data=ICU.cases))
 
-#sum(severe.cases); sum(severe.cases.spread) ##check to make sure that spread preserved severe case number
+#sum(hosp.cases.spread); sum(hosp.cases.spread) ##check to make sure that spread preserved severe case number
 
 
 ############# visualize #############
 
-###relative burden of severe cases before allocation to healthsystems
-rel.severe.cases<-severe.cases/mean(severe.cases)
-plot.data<-data.frame("fips"=fips,"dat"=log10(rel.severe.cases))
-plot.limits <- max(abs(plot.data$dat),na.rm=T)
-usmap::plot_usmap(data=plot.data,values = "dat",col=NA)+scale_fill_gradient2(low="palegoldenrod",mid="orangered",high="darkred",midpoint = 0,na.value='grey60',name="log10(severe cases / mean(severe cases))\nbefore allocation to critical care facilities",limits=c(-plot.limits - 0.2,plot.limits + 0.2))+
-  theme(legend.position = "top")
-
-
-###relative burden of severe cases after allocation to healthsystems
-rel.severe.cases.spread<-severe.cases.spread/mean(severe.cases.spread)
-plot.data<-data.frame("fips"=fips,"dat"=log10(rel.severe.cases.spread))
-plot.data[which(plot.data$da< -1e6),"dat"]<-NA
-plot.limits <- max(abs(plot.data$dat),na.rm=T)
-usmap::plot_usmap(data=plot.data,values = "dat",col=NA)+scale_fill_gradient2(low="palegoldenrod",mid="orangered",high="darkred",midpoint = 0,na.value='grey60',name="log10(severe cases / mean(severe cases))\nafter allocation to critical care facilities",limits=c(-plot.limits- 0.2,plot.limits + 0.2))+
-  theme(legend.position = "top")
-
-###severe cases per icu bed
-spread.severe.cases.per.icu.beds<-severe.cases.spread/hosp.data$icu.beds
-spread.severe.cases.per.icu.beds[which(spread.severe.cases.per.icu.beds==0)]<-NA #switch to NA for plotting purposes
-plot.data<-data.frame("fips"=fips,"dat"=log10(spread.severe.cases.per.icu.beds))
+### total population
+plot.data<-data.frame("fips"=fips,"dat"=log10(demog$Both.Sexes..Total))
 plot.limits <- max(abs(plot.data$dat),na.rm=T)
 mid.point<-min(plot.data$dat,na.rm=T)+ (max(plot.data$dat,na.rm=T)-min(plot.data$dat,na.rm=T))/2
-usmap::plot_usmap(data=plot.data,values = "dat",col=NA)+scale_fill_gradient2(low="palegoldenrod",mid="orangered",high="darkred",midpoint = mid.point,na.value='grey60',name="log10(cumulative severe cases per icu bed)\nafter allocation to critical care facilities,\nassuming 40% cumulative infection rate",limits=c(1.5- 0.2,plot.limits + 0.2))+
+usmap::plot_usmap(data=plot.data,values = "dat",col=NA)+scale_fill_gradient2(low="#e5f5e0",mid="mediumseagreen",high="darkgreen",midpoint =mid.point,na.value='grey60',name="log10 (population)",limits=c(2- 0.2,plot.limits + 0.2))+
   theme(legend.position = "top")
 
-###total severe cases
-plot.data<-data.frame("fips"=fips,"dat"=log10(severe.cases))
+### fraction population over 60
+plot.data<-data.frame("fips"=fips,"dat"=(demog$Both.Sexes..Total...60.to.64.years+demog$Both.Sexes..Total...65.to.69.years+demog$Both.Sexes..Total...70.to.74.years+demog$Both.Sexes..Total...75.to.79.years+demog$Both.Sexes..Total...80.to.84.years+demog$Both.Sexes..Total...85.years.and.over)/demog$Both.Sexes..Total)
 plot.limits <- max(abs(plot.data$dat),na.rm=T)
 mid.point<-min(plot.data$dat,na.rm=T)+ (max(plot.data$dat,na.rm=T)-min(plot.data$dat,na.rm=T))/2
-usmap::plot_usmap(data=plot.data,values = "dat",col=NA)+scale_fill_gradient2(low="palegoldenrod",mid="orangered",high="darkred",midpoint = mid.point,na.value='grey60',name="log10 (cumulative severe cases)\n assuming 40% cumulative infection rate",limits=c(-0- 0.2,plot.limits + 0.2))+
+usmap::plot_usmap(data=plot.data,values = "dat",col=NA)+scale_fill_gradient2(low="#e5f5e0",mid="mediumseagreen",high="darkgreen",midpoint =mid.point,na.value='grey60',name="fraction population over 60",limits=c(0,plot.limits+.02))+
+  theme(legend.position = "top")
+
+###total hospital beds
+plot.data<-data.frame("fips"=fips,"dat"=log10(hosp.data$calc.tot.beds))
+plot.data[which(hosp.data$icu.beds==0),"dat"]<-NA
+plot.limits <- max(abs(plot.data$dat),na.rm=T)
+mid.point<-min(plot.data$dat,na.rm=T)+ (max(plot.data$dat,na.rm=T)-min(plot.data$dat,na.rm=T))/2
+usmap::plot_usmap(data=plot.data,values = "dat",col=NA)+scale_fill_gradient2(low="#e5f5e0",mid="mediumseagreen",high="darkgreen",midpoint =mid.point,na.value='grey60',name="log10 (hospital beds)",limits=c(-0- 0.2,plot.limits + 0.2))+
   theme(legend.position = "top")
 
 ###total ICU beds
@@ -164,17 +166,73 @@ mid.point<-min(plot.data$dat,na.rm=T)+ (max(plot.data$dat,na.rm=T)-min(plot.data
 usmap::plot_usmap(data=plot.data,values = "dat",col=NA)+scale_fill_gradient2(low="#e5f5e0",mid="mediumseagreen",high="darkgreen",midpoint =mid.point,na.value='grey60',name="log10 (ICU beds)",limits=c(-0- 0.2,plot.limits + 0.2))+
   theme(legend.position = "top")
 
-### total population
-plot.data<-data.frame("fips"=fips,"dat"=log10(demog$Both.Sexes..Total))
+###relative burden of hospitalizations before allocation to healthsystems
+rel.hosp.cases<-hosp.cases/mean(hosp.cases)
+plot.data<-data.frame("fips"=fips,"dat"=log10(rel.hosp.cases))
 plot.limits <- max(abs(plot.data$dat),na.rm=T)
-mid.point<-min(plot.data$dat,na.rm=T)+ (max(plot.data$dat,na.rm=T)-min(plot.data$dat,na.rm=T))/2
-usmap::plot_usmap(data=plot.data,values = "dat",col=NA)+scale_fill_gradient2(low="#e5f5e0",mid="mediumseagreen",high="darkgreen",midpoint =mid.point,na.value='grey60',name="log10 (population)",limits=c(2- 0.2,plot.limits + 0.2))+
+usmap::plot_usmap(data=plot.data,values = "dat",col=NA)+scale_fill_gradient2(low="palegoldenrod",mid="orangered",high="darkred",midpoint = 0,na.value='grey60',name="projected log10(hospitalizations / mean(hospitalizations))\n",limits=c(-plot.limits - 0.2,plot.limits + 0.2))+
   theme(legend.position = "top")
 
-### % population over 60
-plot.data<-data.frame("fips"=fips,"dat"=(demog$Both.Sexes..Total...60.to.64.years+demog$Both.Sexes..Total...65.to.69.years+demog$Both.Sexes..Total...70.to.74.years+demog$Both.Sexes..Total...75.to.79.years+demog$Both.Sexes..Total...80.to.84.years+demog$Both.Sexes..Total...85.years.and.over)/demog$Both.Sexes..Total)
-plot.limits <- max(abs(plot.data$dat),na.rm=T)
+###burden of hospitalizations per capita before allocation to healthsystems
+hosp.per.capita<-hosp.cases/demog$Both.Sexes..Total
+plot.data<-data.frame("fips"=fips,"dat"=hosp.per.capita)
+plot.limits <- max(plot.data$dat,na.rm=T)
 mid.point<-min(plot.data$dat,na.rm=T)+ (max(plot.data$dat,na.rm=T)-min(plot.data$dat,na.rm=T))/2
-usmap::plot_usmap(data=plot.data,values = "dat",col=NA)+scale_fill_gradient2(low="#e5f5e0",mid="mediumseagreen",high="darkgreen",midpoint =mid.point,na.value='grey60',name="% population over 60",limits=c(0,plot.limits+.02))+
+usmap::plot_usmap(data=plot.data,values = "dat",col=NA)+scale_fill_gradient2(low="blue",mid="white",high="red",midpoint = mid.point,na.value='grey60',name="projected hospitalizations per capita\nassuming 80% cumulative infection rate, 50% symptom rate  ",limits=c(0,plot.limits))+
   theme(legend.position = "top")
+
+###relative burden of ICU admits before allocation to healthsystems
+rel.severe.cases<-ICU.cases/mean(ICU.cases)
+plot.data<-data.frame("fips"=fips,"dat"=log10(rel.severe.cases))
+plot.limits <- max(abs(plot.data$dat),na.rm=T)
+usmap::plot_usmap(data=plot.data,values = "dat",col=NA)+scale_fill_gradient2(low="palegoldenrod",mid="orangered",high="darkred",midpoint = 0,na.value='grey60',name="projected log10(hospitalizations / mean(hospitalizations))",limits=c(-plot.limits - 0.2,plot.limits + 0.2))+
+  theme(legend.position = "top")
+
+###burden of ICU admits per capita before allocation to healthsystems
+icu.per.capita<-ICU.cases/demog$Both.Sexes..Total
+plot.data<-data.frame("fips"=fips,"dat"=icu.per.capita)
+plot.limits <- max(plot.data$dat,na.rm=T)
+mid.point<-min(plot.data$dat,na.rm=T)+ (max(plot.data$dat,na.rm=T)-min(plot.data$dat,na.rm=T))/2
+usmap::plot_usmap(data=plot.data,values = "dat",col=NA)+scale_fill_gradient2(low="blue",mid="white",high="red",midpoint = mid.point,na.value='grey60',name="projected ICU admits per capita\nassuming 80% cumulative infection rate, 50% symptom rate     ",limits=c(0,plot.limits))+
+  theme(legend.position = "top")
+
+###relative burden of hospitalizations after allocation to healthsystems
+rel.hosp.cases.spread<-hosp.cases.spread/mean(hosp.cases.spread)
+plot.data<-data.frame("fips"=fips,"dat"=log10(rel.hosp.cases.spread))
+plot.data[which(plot.data$da< -1e6),"dat"]<-NA
+plot.limits <- max(abs(plot.data$dat),na.rm=T)
+usmap::plot_usmap(data=plot.data,values = "dat",col=NA)+scale_fill_gradient2(low="palegoldenrod",mid="orangered",high="darkred",midpoint = 0,na.value='grey60',name="projected log10(hospitalizations / mean(hospitalizations))\nafter allocation to hospitals",limits=c(-plot.limits- 0.2,plot.limits + 0.2))+
+  theme(legend.position = "top")
+
+###relative burden of ICU admits after allocation to healthsystems
+rel.ICU.cases.spread<-ICU.cases.spread/mean(ICU.cases.spread)
+plot.data<-data.frame("fips"=fips,"dat"=log10(rel.ICU.cases.spread))
+plot.data[which(plot.data$da< -1e6),"dat"]<-NA
+plot.limits <- max(abs(plot.data$dat),na.rm=T)
+usmap::plot_usmap(data=plot.data,values = "dat",col=NA)+scale_fill_gradient2(low="palegoldenrod",mid="orangered",high="darkred",midpoint = 0,na.value='grey60',name="projected log10(ICU admits / mean(ICU admits))\nafter allocation to critical care facilities",limits=c(-plot.limits- 0.2,plot.limits + 0.2))+
+  theme(legend.position = "top")
+
+###hospitalizations per hospital bed
+spread.hospitalizations.per.bed<-hosp.cases.spread/hosp.data$calc.tot.beds
+spread.hospitalizations.per.bed[which(spread.hospitalizations.per.bed==0)]<-NA #switch to NA for plotting purposes
+plot.data<-data.frame("fips"=fips,"dat"=log10(spread.hospitalizations.per.bed))
+plot.max <- max(plot.data$dat,na.rm=T)
+plot.min<-min(plot.data$dat,na.rm=T)
+mid.point<-min(plot.data$dat,na.rm=T)+ (max(plot.data$dat,na.rm=T)-min(plot.data$dat,na.rm=T))/2
+usmap::plot_usmap(data=plot.data,values = "dat",col=NA)+scale_fill_gradient2(low="palegoldenrod",mid="orangered",high="darkred",midpoint = mid.point,na.value='grey60',name="projected log10(hospitalizaitons per hospital bed)\nafter allocation to hospitals,\nassuming 80% cumulative infection rate, 50% symptom rate",limits=c(plot.min,plot.max))+
+  theme(legend.position = "top")
+
+###ICU admits per ICU bed
+spread.ICU.per.bed<-ICU.cases.spread/hosp.data$icu.beds
+spread.ICU.per.bed[which(spread.ICU.per.bed==0)]<-NA #switch to NA for plotting purposes
+plot.data<-data.frame("fips"=fips,"dat"=log10(spread.ICU.per.bed))
+plot.max <- max(plot.data$dat,na.rm=T)
+plot.min<-min(plot.data$dat,na.rm=T)
+mid.point<-min(plot.data$dat,na.rm=T)+ (max(plot.data$dat,na.rm=T)-min(plot.data$dat,na.rm=T))/2
+usmap::plot_usmap(data=plot.data,values = "dat",col=NA)+scale_fill_gradient2(low="palegoldenrod",mid="orangered",high="darkred",midpoint = mid.point,na.value='grey60',name="projected log10(ICU admits per ICU bed)\nafter allocation to critical care facilities,\nassuming 80% cumulative infection rate, 50% symptom rate",limits=c(plot.min,plot.max))+
+  theme(legend.position = "top")
+
+
+
+
 
