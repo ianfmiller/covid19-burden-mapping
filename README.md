@@ -8,7 +8,7 @@
 #### These preliminary results should be interpreted as rough estimate of where the burden of COVID-19 may be highest rather than as exact projections. However, they could still be used as a set of guidelines for prioritizing resource allocation. 
 #### Currently, our estimates assume:
 ##### 1) a cumulative 40% population infection rate 
-######   This is more so a scenario we seek to investigate than an assumption about final epidemci size. A 40% cumulative infection rate would perhaps be consideerd pessimistic in the short term (i.e. next several months), but in the long term (i.e., beyond) is perhaps optimistic.
+######   This is more so a scenario we seek to investigate than an assumption about final epidemic size. A 40% cumulative infection rate would perhaps be considered pessimistic in the short term (i.e. next several months), but in the long term (i.e., beyond) is perhaps optimistic.
 ##### 2) equal odds of infection across all age classes, 
 ######   Currently, cases appear to be distributed non-uniformly across age classes. However, given the multitude of non-exclusive hypotheses about what could account for this pattern, and the dearth of data necessary to test them, we proceed cautiously while making the simplifying assumption of equal risk across age classes. This is an aspect of our methods that we are actively working to improve. 
 ##### 3) an asymptomatic rate of 50% in each age class,
@@ -16,7 +16,7 @@
 ##### and 4) homogeneous spread across space. 
 ######   This assumption, which we make for convenience, is certainly incorrect for the immediate future, but may become more appropriate as the outbreak grows. As we aim to predict long term patterns of disease burden, this assumption is reasonable.
 
-#### We modeled heath care system capacity (e.g., number of hospital and ICU beds) at the county level. We distributed cases originating within a county to the healthcare systems of that county and of other counties based on distance and relative hospitalbed/ICU bed count.
+#### We modeled heath care system capacity (e.g., number of hospital and ICU beds) at the county level. We distributed cases originating within a county to the healthcare systems of that county and of other counties based on distance and relative hospital bed/ICU bed count.
 #### See methodological details below for more detailed information.
 ## Preliminary results
 ### Cumulative ICU admits per ICU bed
@@ -36,7 +36,7 @@
 ### Relative ICU admits
 #### Colors show the relative number of ICU admits in each county (prior to distribution to healthcare systems).
 ![alt text](https://github.com/ianfmiller/covid19-burden-mapping/blob/master/README.figs/rel.icu.pre.alloc.png)
-### Relative Hospitalizations
+### Relative hospitalizations
 #### Colors show the relative number of hospitalizations in each county (prior to distribution to healthcare systems).
 ![alt text](https://github.com/ianfmiller/covid19-burden-mapping/blob/master/README.figs/rel.hosp.pre.alloc.png)
 ### <a href="https://github.com/ianfmiller/covid19-burden-mapping/blob/master/extended.results.md">More visualizations available here.</a>
