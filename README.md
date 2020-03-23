@@ -65,7 +65,7 @@
 #### And finally a relative weight for each county, <img src="https://render.githubusercontent.com/render/math?math=r_{i}"> , as <img src="https://render.githubusercontent.com/render/math?math=r_{i} = \frac{w_{i}}{\sum_{j=0}^{n}  w_{j}}">
 #### The severe cases originating in <img src="https://render.githubusercontent.com/render/math?math=c_{0}"> are distributed to counties <img src="https://render.githubusercontent.com/render/math?math=c_{0}...c_{n}"> in proportion to <img src="https://render.githubusercontent.com/render/math?math=r_{0}...r_{n}">
 ## Code
-#### Code for all data analysis and plotting is contained in <a href="https://github.com/ianfmiller/covid19-burden-mapping/blob/master/mapping.R">mapping.R</a> 
+#### Code for all data analysis and plotting is contained in <a href="https://github.com/ianfmiller/covid19-burden-mapping/blob/master/mapping.US.R">mapping.US.R</a> 
 #### Code for generating the hospital bed data file for use in plotting is contained in <a href="https://github.com/ianfmiller/covid19-burden-mapping/blob/master/clean.hosp.data.R">clean.hosp.data.R</a> Unfortunately, American Hospital Association policy prevents us from posting the cleaned and aggregated data that this file generates. If you are able to access the 2018 AHA Survey Database, the raw file needed for this code is "AS2018FULLFILE.csv" in '/2018 AHA survey/COMMA/'
 ## Data sources
 #### We used publicly available <a href="https://factfinder.census.gov/faces/tableservices/jsf/pages/productview.xhtml?src=bkmk">2018 demography data from the U.S. Census</a>
