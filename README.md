@@ -21,26 +21,24 @@
 ### Cumulative ICU admits per ICU bed
 #### Colors show log10 ratio of estimated critical cases to ICU beds in each county after cases have been distributed to healthcare systems. Counties with 0 ICU beds, and thus no capacity to treat critical cases, are shaded grey. All severe cases from regions with 0 ICU beds have been allocated to other counties (see methodological notes below).
 #### Interpretation notes: This figure gives a reasonable picture of where the burden of cricical cases might be highest relative to healthsystem capacity.
-![alt text](https://github.com/ianfmiller/covid19-burden-mapping/blob/master/README.figs/Severe.cases.per.icu.bed.png)
+![alt text](https://github.com/ianfmiller/covid19-burden-mapping/blob/master/README.figs/ICU.per.bed.png)
 ### Cumulative hospitalizations per hospital bed
 #### Colors show log10 ratio of estimated hospitalizations to hospital beds in each county after cases have been distributed to healthcare systems. Counties with 0 hospital beds, and thus no capacity to treat severe cases, are shaded grey. All cases from regions with 0 beds have been allocated to other counties (see methodological notes below).
 #### Interpretation notes: This figure gives a reasonable picture of where the burden of severe cases might be highest relative to healthsystem capacity.
-![alt text](https://github.com/ianfmiller/covid19-burden-mapping/blob/master/README.figs/Severe.cases.per.icu.bed.png)
+![alt text](https://github.com/ianfmiller/covid19-burden-mapping/blob/master/README.figs/hosp.per.bed.png)
 ### ICU admits per capita 
-#### Colors show the number of ICU admissions per person in each county (prior to distribution to healthcare systems).
-![alt text](https://github.com/ianfmiller/covid19-burden-mapping/blob/master/README.figs/rel.severe.cases.post.alloc.png)
+#### Colors show the number of ICU admits per person in each county (prior to distribution to healthcare systems).
+![alt text](https://github.com/ianfmiller/covid19-burden-mapping/blob/master/README.figs/icu.per.capita.png)
 ### Hospitalizations per capita 
-#### Colors show the number of ICU admissions per person in each county (prior to distribution to healthcare systems).
-![alt text](https://github.com/ianfmiller/covid19-burden-mapping/blob/master/README.figs/rel.severe.cases.post.alloc.png)
+#### Colors show the number of hospitalizations per person in each county (prior to distribution to healthcare systems).
+![alt text](https://github.com/ianfmiller/covid19-burden-mapping/blob/master/README.figs/hosp.per.capita.png)
 ### ICU admits
-#### Colors show the number of ICU admissions in each county (prior to distribution to healthcare systems).
-![alt text](https://github.com/ianfmiller/covid19-burden-mapping/blob/master/README.figs/rel.severe.cases.post.alloc.png)
+#### Colors show the relative number of ICU admits in each county (prior to distribution to healthcare systems).
+![alt text](https://github.com/ianfmiller/covid19-burden-mapping/blob/master/README.figs/rel.icu.pre.alloc.png)
 ### Hospitalizations
-#### Colors show the number of hospitalizations in each county (prior to distribution to healthcare systems).
-![alt text](https://github.com/ianfmiller/covid19-burden-mapping/blob/master/README.figs/rel.severe.cases.post.alloc.png)
-### Estimated relative number of severe cases in the US, prior to distribution to healthcare systems.
-#### Colors show log10 ratio of estimated severe cases in each county to the average number of severe cases per county in the U.S.
-![alt text](https://github.com/ianfmiller/covid19-burden-mapping/blob/master/README.figs/rel.severe.cases.pre.alloc.png)
+#### Colors show the relative number of hospitalizations in each county (prior to distribution to healthcare systems).
+![alt text](https://github.com/ianfmiller/covid19-burden-mapping/blob/master/README.figs/rel.hosp.pre.alloc.png)
+
 ## Methodological notes
 ### Severe case estimation
 #### We calculated the total number of cases requireding hospitalization/ICU admits in each US county as the sum of cases requiring hospitalization/ICU admission across age classes (0-9,10-19,...,70-79,80+).
