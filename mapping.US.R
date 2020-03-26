@@ -62,10 +62,10 @@ allocate.cases<-function(county.fips,dist.50=20,max.dist=400,weight.dist=.1,bed.
   icu.hosp<-hosp.data[,c("fips",bed.weight.metric)]
   dists<-dist.mat[which(fips==county.fips),]
   icu.hosp<-data.frame(hosp.data,dists)
-  icu.hosp<-subset(icu.hosp,icu.beds>0)
+  icu.hosp<-subset(icu.hosp,bed.weight.metric>0)
   cand.hosps<-subset(icu.hosp,dists<=max.dist)
   cand.hosps<-icu.hosp[which(as.numeric(icu.hosp[,"dists"])<=max.dist),]
-  bed.weights<-cand.hosps$icu.beds/sum(cand.hosps$icu.beds)
+  bed.weights<-cand.hosps[,bed.weight.metric]/sum(cand.hosps[,bed.weight.metric])
   dist.weights<-dist.curve(cand.hosps$dists,dist.50)/sum(dist.curve(cand.hosps$dists,dist.50))
   weights<-bed.weights*dist.weights
   cand.hosps<-cbind(cand.hosps,"rel.weights"=weights/sum(weights))
@@ -128,9 +128,10 @@ fatalities<-rowSums(p.infected*demog.binned*IFR)
 
 transfer.mat<-get.transfer.mat(bed.weight.metric="calc.tot.beds")
 hosp.cases.spread<-unlist(lapply(fips, incoming,data=hosp.cases))
+hosp.cases.spread[which(is.nan(hosp.cases.spread))]<-0
 transfer.mat<-get.transfer.mat(bed.weight.metric="icu.beds")
 ICU.cases.spread<-unlist(lapply(fips, incoming,data=ICU.cases))
-
+ICU.cases.spread[which(is.nan(ICU.cases.spread))]<-0
 #sum(hosp.cases.spread); sum(hosp.cases.spread) ##check to make sure that spread preserved severe case number
 
 
@@ -158,7 +159,7 @@ if(save.plots) {dev.off()}
 ###total hospital beds
 if(save.plots) {png("hosp.beds.png")}
 plot.data<-data.frame("fips"=fips,"dat"=log10(hosp.data$calc.tot.beds))
-plot.data[which(hosp.data$icu.beds==0),"dat"]<-NA
+plot.data[which(hosp.data$calc.tot.beds==0),"dat"]<-NA
 plot.limits <- max(abs(plot.data$dat),na.rm=T)
 mid.point<-min(plot.data$dat,na.rm=T)+ (max(plot.data$dat,na.rm=T)-min(plot.data$dat,na.rm=T))/2
 usmap::plot_usmap(data=plot.data,values = "dat",col=NA)+scale_fill_gradient2(low="#e5f5e0",mid="mediumseagreen",high="darkgreen",midpoint =mid.point,na.value='grey60',name="log10 (hospital beds)",limits=c(-0- 0.2,plot.limits + 0.2))+
