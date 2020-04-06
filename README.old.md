@@ -72,3 +72,4 @@
 #### We obtained data on hospital location and bed number from the American Hospital Association 2018 annual survey. We aggregated the data by county in accordance with American Hospital Association date use policy. Unfortunately, these data are behind a paywall. 
 #### We used age specific estimates of hospital admission rates and ICU admission rates given hospitalization from   <a href="https://www.imperial.ac.uk/media/imperial-college/medicine/sph/ide/gida-fellowships/Imperial-College-COVID19-NPI-modelling-16-03-2020.pdf">Ferguson et al. (2020) Impact of non-pharmaceutical interventions (NPIs) to reduce COVID19 mortality and healthcare demand.</a>
 
+ 
