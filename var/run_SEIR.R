@@ -4,23 +4,42 @@ setwd("~/SEIR")
 analysis.setup.lines<-readLines("analysis.R")
 
 R0.US.levels<-c(2,4,6)
+R0.min<-2
+R0.max.levels<-c(3,5)
 theta.levels<-c(0,.5,1)
 beta.mod.C.levels<-c(.1,.5,1)
 
 index<-1
-for(i in 1:3) #add nested loops if needed for other models, subsets, etc.
+for(i in 1:5) #add nested loops if needed for other models, subsets, etc.
 {
   for (j in 1:3)
   {
     for (k in 1:3)
     {
-      R0.US<-R0.US.levels[i]
+      
+      if (i %in% c(1,2,3))
+      {
+        R0.adj<-F
+        R0.US<-R0.US.levels[i]
+        R0.max<-0 #dummy value
+      }
+      
+      if(i %in% c(4,5))
+      {
+        R0.adj<-T
+        R0.max<-R0.max.levels[i-3]
+        R0.US<-0 #dummy value
+      }
+      
       theta<-theta.levels[j]
       beta.mod.C<-beta.mod.C.levels[k]
       
       setwd("~/SEIR")
       
-      analysis.setup.lines[min(grep('R0.US<-',analysis.setup.lines))]<-paste0("R0.US<-",R0.US)
+      analysis.setup.lines[min(grep('R0.adj<-',analysis.setup.lines))]<-paste0("R0.adj<-",R0.adj)
+      analysis.setup.lines[min(grep('R0.max<-',analysis.setup.lines))]<-paste0("R0.max<-",R0.max)
+      analysis.setup.lines[min(grep('R0.min<-',analysis.setup.lines))]<-paste0("R0.min<-",R0.min)
+      analysis.setup.lines[min(grep('R0.US<-',analysis.setup.lines))]<-paste0("R0.US<-",R0.US) #doesn't matter if R0.adj=T
       analysis.setup.lines[min(grep('theta<-',analysis.setup.lines))]<-paste0("theta<-",theta)
       analysis.setup.lines[min(grep('beta.mod.C<-',analysis.setup.lines))]<-paste0("beta.mod.C<-",beta.mod.C)
       
@@ -33,6 +52,7 @@ for(i in 1:3) #add nested loops if needed for other models, subsets, etc.
       file.copy("~/SEIR/age.structured.model.R",paste0("~/SEIR/",job.name))
       file.copy("~/SEIR/geo.csv",paste0("~/SEIR/",job.name))
       file.copy("~/SEIR/us.demog.data.csv",paste0("~/SEIR/",job.name))
+      file.copy("~/SEIR/US.pop.urban.rural.csv",paste0("~/SEIR/",job.name))
       file.copy("~/SEIR/US.hosp.bed.data.csv",paste0("~/SEIR/",job.name))
       index<-index+1
     }
@@ -48,7 +68,7 @@ writeLines(
     "#SBATCH -o SEIR.analysis.out",
     "#SBATCH -e SEIR.analysis.err",
     "#SBATCH -J SEIR", 
-    "#SBATCH --array=1-27",
+    "#SBATCH --array=1-45",
     "#SBATCH --cpus-per-task=10",
     "#SBATCH --mem-per-cpu=1G",
     "#SBATCH -t 0-06:00:00",

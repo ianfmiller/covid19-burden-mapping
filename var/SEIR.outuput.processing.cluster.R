@@ -1,11 +1,15 @@
-R0.US<-2
+R0.adj<-F
+R0.max<-5
+R0.min<-2
+R0.US<-6 #R0 for entire US
+R0.name<-if(R0.adj==T) {paste0("dens.adj.",R0.max)} else {R0.US}
 theta<-1
 beta.mod.C<-.1
 beta.mod.A<-.5
 
 source("analysis.prep.R")
 
-analysis.name<-paste0("R0.",R0.US,".theta.",theta,".beta.mod.A.",beta.mod.A,".beta.mod.C.",beta.mod.C)
+analysis.name<-paste0("R0.",R0.name,".theta.",theta,".beta.mod.A.",beta.mod.A,".beta.mod.C.",beta.mod.C)
       
 home.dir<-getwd()
 setwd("~/SEIR/data")
