@@ -24,6 +24,16 @@ hosp.data<-hosp.data[order(hosp.data$fips),]
 
 #all(demog$fips==hosp.data$fips) check to make sure order matches
 
+###urban/rural data https://data.census.gov/cedsci/table?q=urban%20area%20deliniation&hidePreview=true&tid=DECENNIALSF12010.P2&vintage=2010&g=0100000US.050000
+urban.rural<-read.csv("US.pop.urban.rural.csv")
+urban.rural$fips[which(nchar(urban.rural$fips)==4)]<-paste0("0",urban.rural$fips[which(nchar(urban.rural$fips)==4)]) #correct fips with leading 0s
+
+### correct fips codes for counties that changed names https://www.cdc.gov/nchs/nvss/bridged_race/county_geography-_changes2015.pdf
+urban.rural$fips[93]<-"02158"
+urban.rural$fips[2418]<-"46102"
+urban.rural<-urban.rural[-which(!urban.rural$fips %in% fips),]
+urban.rural<-urban.rural[match(fips,urban.rural$fips),]
+all(urban.rural$fips==fips)
 ############## calculate case allocation #############
 
 ### get coordinates of county centers of population
@@ -109,7 +119,7 @@ incoming<-function(dest.fips,data)
   sum(incoming.cases)
 }
 
-############# calculate severe and critical cases in each county #############
+############# county demographics #############
 
 demog.binned<-c() #bind demography
 for (i in age.class.columns) 
@@ -119,8 +129,18 @@ for (i in age.class.columns)
 }
 colnames(demog.binned)<-age.classes
 
-### Simulate epi dynamics for each county. Sets parameters, runs SEIR model.
+
+
+############# function for scaling R0 by pop. density #############
+
+R0.urban.func<-function(x,R0.max,R0.min)
+{
+  R0.min+(R0.max-R0.min)*(x/quantile(urban.rural$Total.Urban/urban.rural$Total,1))
+}
+
+############# load parameters #############
 
 hosp.rates<-c(.001,.003,.012,.032,.049,.102,.166,.243,.273) #data https://www.imperial.ac.uk/media/imperial-college/medicine/sph/ide/gida-fellowships/Imperial-College-COVID19-NPI-modelling-16-03-2020.pdf
 icu.rates.given.hosp<-c(.05,.05,.05,.05,.063,.122,.274,.432,.709) #data https://www.imperial.ac.uk/media/imperial-college/medicine/sph/ide/gida-fellowships/Imperial-College-COVID19-NPI-modelling-16-03-2020.pdf
 IFR <- c(.00002,.00006,.0003,.0008,.0015,.006,.022,.051,.093) #data https://www.imperial.ac.uk/media/imperial-college/medicine/sph/ide/gida-fellowships/Imperial-College-COVID19-NPI-modelling-16-03-2020.pdf
+beta.mod.A<-0.5

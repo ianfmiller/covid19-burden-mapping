@@ -11,14 +11,13 @@ library(gridExtra)
 library(grid)
 library(tiff)
 library(viridis)
-library(reshape2)
 
-R0.US<-2
+R0<-3
 theta<-1
 beta.mod.C<-.1
 beta.mod.A<-.5
 
-analysis.name<-paste0("R0.",R0.US,".theta.",theta,".beta.mod.A.",beta.mod.A,".beta.mod.C.",beta.mod.C)
+analysis.name<-paste0("R0.dens.adj.",R0,".theta.",theta,".beta.mod.A.",beta.mod.A,".beta.mod.C.",beta.mod.C)
 
 ICU.cases<-readRDS(paste0(analysis.name,".ICU.cases.RDS"))
 rel.ICU.cases<-ICU.cases/mean(ICU.cases)
@@ -31,7 +30,7 @@ ICU.cases<-readRDS(paste0(analysis.name,".ICU.cases.RDS"))
 ICU.per.capita<-ICU.cases/demog$Both.Sexes..Total
 plot.data<-data.frame("fips"=fips,"dat"=log10(ICU.per.capita))
 
-p2<-usmap::plot_usmap(data=plot.data,values = "dat",col=NA)+scale_fill_gradientn(colors=viridis_pal(option="magma",direction = -1)(9),na.value='grey60',name="",limits=c(-3.1,-2),breaks=log10(c(.001,.003,.01)),labels=c(.001,.003,.01))+
+p2<-usmap::plot_usmap(data=plot.data,values = "dat",col=NA)+scale_fill_gradientn(colors=viridis_pal(option="magma",direction = -1)(9),na.value='grey60',name="",limits=c(-3.21,-2),breaks=seq(-3,-2,.5),labels=round(10^seq(-3,-2,.5),3))+
   theme(legend.position = "left",legend.key.width = unit(.5, "cm"),plot.title = element_text(hjust = .5,size=10))+labs(title="projected cumulative ICU admissions per capita\n")+geom_polygon(data =us_map(regions="states"),fill="NA",aes(x=x,y=y,group=group),color="black",size=.2)
 
 ICU.cases.spread<-readRDS(paste0(analysis.name,".ICU.cases.spread.RDS"))
@@ -40,14 +39,14 @@ spread.ICU.per.bed<-ICU.cases.spread/hosp.data$icu.beds
 spread.ICU.per.bed[which(spread.ICU.per.bed==0)]<-NA #switch to NA for plotting purposes
 plot.data<-data.frame("fips"=fips,"dat"=log10(spread.ICU.per.bed))
 
-p3<-usmap::plot_usmap(data=plot.data,values = "dat",col=NA)+ geom_tile(aes(x = x, y = y, group = group,colour=''))+scale_fill_gradientn(colors=viridis_pal(option="magma",direction = -1)(9),na.value='grey60',name="",limits=c(.47,2.015),breaks=log10(c(3,10,30,100)),labels=c(3,10,30,100))+
+p3<-usmap::plot_usmap(data=plot.data,values = "dat",col=NA)+ geom_tile(aes(x = x, y = y, group = group,colour=''))+scale_fill_gradientn(colors=viridis_pal(option="magma",direction = -1)(9),na.value='grey60',name="",limits=c(.4,2),breaks=log10(c(3,10,30,100)),labels=c(3,10,30,100))+
   guides(colour=guide_legend("No\nICU beds", title.theme=element_text(size=6),override.aes=list(color="grey60",fill="grey60"),title.position = "right"))+theme(legend.position = "left",legend.spacing=unit(0.01, 'cm'),legend.key.width = unit(.5, "cm"),plot.title = element_text(hjust = .5,size=10))+labs(title="projected cumulative ICU admissions per ICU bed\n after allocation to healthcare systems")+geom_polygon(data =us_map(regions="states"),fill="NA",aes(x=x,y=y,group=group),color="black",size=.2)
 
-R0.US<-5
+R0<-5
 theta<-0
 beta.mod.C<-1
 
-analysis.name<-paste0("R0.",R0.US,".theta.",theta,".beta.mod.A.",beta.mod.A,".beta.mod.C.",beta.mod.C)
+analysis.name<-paste0("R0.dens.adj.",R0,".theta.",theta,".beta.mod.A.",beta.mod.A,".beta.mod.C.",beta.mod.C)
 
 ICU.cases<-readRDS(paste0(analysis.name,".ICU.cases.RDS"))
 rel.ICU.cases<-ICU.cases/mean(ICU.cases)
@@ -60,7 +59,7 @@ ICU.cases<-readRDS(paste0(analysis.name,".ICU.cases.RDS"))
 ICU.per.capita<-ICU.cases/demog$Both.Sexes..Total
 plot.data<-data.frame("fips"=fips,"dat"=log10(ICU.per.capita))
 
-p5<-usmap::plot_usmap(data=plot.data,values = "dat",col=NA)+scale_fill_gradientn(colors=viridis_pal(option="magma",direction = -1)(9),na.value='grey60',name="",limits=c(-3.1,-2),breaks=log10(c(.001,.003,.01)),labels=c(.001,.003,.01))+
+p5<-usmap::plot_usmap(data=plot.data,values = "dat",col=NA)+scale_fill_gradientn(colors=viridis_pal(option="magma",direction = -1)(9),na.value='grey60',name="",limits=c(-3.21,-2),breaks=seq(-3,-2,.5),labels=round(10^seq(-3,-2,.5),3))+
   theme(legend.position = "left",legend.key.width = unit(.5, "cm"),plot.title = element_text(hjust = .5,size=10))+labs(title="projected cumulative ICU admissions per capita\n,")+geom_polygon(data =us_map(regions="states"),fill="NA",aes(x=x,y=y,group=group),color="black",size=.2)
 
 ICU.cases.spread<-readRDS(paste0(analysis.name,".ICU.cases.spread.RDS"))
@@ -69,13 +68,13 @@ spread.ICU.per.bed<-ICU.cases.spread/hosp.data$icu.beds
 spread.ICU.per.bed[which(spread.ICU.per.bed==0)]<-NA #switch to NA for plotting purposes
 plot.data<-data.frame("fips"=fips,"dat"=log10(spread.ICU.per.bed))
 
-p6<-usmap::plot_usmap(data=plot.data,values = "dat",col=NA)+ geom_tile(aes(x = x, y = y, group = group,colour=''))+scale_fill_gradientn(colors=viridis_pal(option="magma",direction = -1)(9),na.value='grey60',name="",limits=c(.47,2.015),breaks=log10(c(3,10,30,100)),labels=c(3,10,30,100))+
+p6<-usmap::plot_usmap(data=plot.data,values = "dat",col=NA)+ geom_tile(aes(x = x, y = y, group = group,colour=''))+scale_fill_gradientn(colors=viridis_pal(option="magma",direction = -1)(9),na.value='grey60',name="",limits=c(.4,2),breaks=log10(c(3,10,30,100)),labels=c(3,10,30,100))+
   guides(colour=guide_legend("No\nICU beds", title.theme=element_text(size=6),override.aes=list(color="grey60",fill="grey60"),title.position = "right"))+theme(legend.position = "left",legend.spacing=unit(0.01,"cm"),legend.key.width = unit(.5, "cm"),plot.title = element_text(hjust = .5,size=10))+labs(title="projected cumulative ICU admissions per ICU bed\n after allocation to healthcare systems")+geom_polygon(data =us_map(regions="states"),fill="NA",aes(x=x,y=y,group=group),color="black",size=.2)
 
-R0.US<-2
+R0.US<-3
 theta<-1
 beta.mod.C<-.1
-analysis.name<-paste0("R0.",R0.US,".theta.",theta,".beta.mod.A.",beta.mod.A,".beta.mod.C.",beta.mod.C)
+analysis.name<-paste0("R0.dens.adj.",R0.US,".theta.",theta,".beta.mod.A.",beta.mod.A,".beta.mod.C.",beta.mod.C)
 SEIR.output<-readRDS(paste0(analysis.name,".SEIR.output.RDS"))
 new.dat1<-c()
 for (i in seq(1,nrow(demog.binned),10))
@@ -95,11 +94,11 @@ new.dat1$variable[which(new.dat1$variable=="Ip.50.59")]<-5
 new.dat1$variable[which(new.dat1$variable=="Ip.60.69")]<-6
 new.dat1$variable[which(new.dat1$variable=="Ip.70.79")]<-7
 new.dat1$variable[which(new.dat1$variable=="Ip.80plus")]<-8
-  
+
 R0.US<-5
 theta<-0
 beta.mod.C<-1
-analysis.name<-paste0("R0.",R0.US,".theta.",theta,".beta.mod.A.",beta.mod.A,".beta.mod.C.",beta.mod.C)
+analysis.name<-paste0("R0.dens.adj.",R0.US,".theta.",theta,".beta.mod.A.",beta.mod.A,".beta.mod.C.",beta.mod.C)
 SEIR.output<-readRDS(paste0(analysis.name,".SEIR.output.RDS"))
 new.dat2<-c()
 for (i in seq(1,nrow(demog.binned),10))
@@ -129,18 +128,19 @@ p7<-ggplot(plot.dat,aes(variable,value,group=index,color=scenario))+geom_line()+
   guides(color=guide_legend(override.aes=list(color=c("blue","red"),size=1.1)))
 
 
-R0.US<-2
+
+R0<-3
 theta<-1
 beta.mod.C<-.1
-analysis.name<-paste0("R0.",R0.US,".theta.",theta,".beta.mod.A.",beta.mod.A,".beta.mod.C.",beta.mod.C)
+analysis.name<-paste0("R0.dens.adj.",R0,".theta.",theta,".beta.mod.A.",beta.mod.A,".beta.mod.C.",beta.mod.C)
 ICU.cases<-readRDS(paste0(analysis.name,".ICU.cases.RDS"))
 ICU.per.capita<-ICU.cases/demog$Both.Sexes..Total
 top.10.index.opt<-which(ICU.per.capita>=quantile(ICU.per.capita,na.rm = T,.9))
 
-R0.US<-5
+R0<-5
 theta<-0
 beta.mod.C<-1
-analysis.name<-paste0("R0.",R0.US,".theta.",theta,".beta.mod.A.",beta.mod.A,".beta.mod.C.",beta.mod.C)
+analysis.name<-paste0("R0.dens.adj.",R0,".theta.",theta,".beta.mod.A.",beta.mod.A,".beta.mod.C.",beta.mod.C)
 ICU.cases<-readRDS(paste0(analysis.name,".ICU.cases.RDS"))
 ICU.per.capita<-ICU.cases/demog$Both.Sexes..Total
 top.10.index.pess<-which(ICU.per.capita>=quantile(ICU.per.capita,na.rm = T,.9))
@@ -159,20 +159,20 @@ p8<-plot_usmap(data=plot.data,values = "dat",col=NA)+
   labs(title="counties at or above 90% quantile\ncumulative ICU admissions per capita")+geom_polygon(data =us_map(regions="states"),fill="NA",aes(x=x,y=y,group=group),color="black",size=.2)
 
 
-R0.US<-2
+R0<-3
 theta<-1
 beta.mod.C<-.1
-analysis.name<-paste0("R0.",R0.US,".theta.",theta,".beta.mod.A.",beta.mod.A,".beta.mod.C.",beta.mod.C)
+analysis.name<-paste0("R0.dens.adj.",R0,".theta.",theta,".beta.mod.A.",beta.mod.A,".beta.mod.C.",beta.mod.C)
 ICU.cases.spread<-readRDS(paste0(analysis.name,".ICU.cases.spread.RDS"))
 ICU.cases.spread[which(is.nan(ICU.cases.spread))]<-0
 spread.ICU.per.bed<-ICU.cases.spread/hosp.data$icu.beds
 spread.ICU.per.bed[which(spread.ICU.per.bed==0)]<-NA #switch to NA for plotting purposes
 top.10.index.opt<-which(spread.ICU.per.bed>=quantile(spread.ICU.per.bed,na.rm = T,.9))
 
-R0.US<-5
+R0<-5
 theta<-0
 beta.mod.C<-1
-analysis.name<-paste0("R0.",R0.US,".theta.",theta,".beta.mod.A.",beta.mod.A,".beta.mod.C.",beta.mod.C)
+analysis.name<-paste0("R0.dens.adj.",R0,".theta.",theta,".beta.mod.A.",beta.mod.A,".beta.mod.C.",beta.mod.C)
 ICU.cases.spread<-readRDS(paste0(analysis.name,".ICU.cases.spread.RDS"))
 ICU.cases.spread[which(is.nan(ICU.cases.spread))]<-0
 spread.ICU.per.bed<-ICU.cases.spread/hosp.data$icu.beds
@@ -194,8 +194,8 @@ p9<-plot_usmap(data=plot.data,values = "dat",col=NA)+
 
 #title1<-textGrob(bquote(paste(R[0]," = 2, ",theta," = 1, ",b[c]," = 0.1")), gp=gpar(fontsize=20,font=8),hjust=.33)
 #title2<-textGrob(bquote(paste(R[0]," = 6, ",theta," = 0, ",b[c]," = 1")), gp=gpar(fontsize=20,font=8),hjust=.33)
-title1<-textGrob("optimistic scenario", gp=gpar(fontsize=20,font=8),hjust=.33)
-title2<-textGrob("pessimistic scenario", gp=gpar(fontsize=20,font=8),hjust=.33)
+title1<-textGrob("alternate optimistic scenario", gp=gpar(fontsize=20,font=8),hjust=.33)
+title2<-textGrob("alternate pessimistic scenario", gp=gpar(fontsize=20,font=8),hjust=.33)
 title3<-textGrob("comparison", gp=gpar(fontsize=20,font=8),hjust=.33)
 
 grid.arrange(

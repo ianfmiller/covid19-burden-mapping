@@ -1,3 +1,4 @@
+set.seed(89034)
 dim<-9 #set dimensions of contact matrix
 
 ### load and format contact data--use UK paterns for US
@@ -29,24 +30,19 @@ for (i in 1:dim)
   }
 }
 
-### get symptomatic rates for each age class--data/method from https://cmmid.github.io/topics/covid19/current-patterns-transmission/reports/age_hypotheses/Main%20text%20-%20COVID-19%20dynamics%20in%20children_%20implications%20for%20policy%20-%20no_line_numbers.pdf
-cm_interpolate_cos = function(x, x0, y0, x1, y1)
-{
-  ifelse(x < x0, y0, ifelse(x > x1, y1, y0 + (y1 - y0) * (0.5 - 0.5 * cos(pi * (x - x0) / (x1 - x0)))))
-}
-symp.pars<-data.frame("age_y"=14,"age_m"=55,"age_o"=64,"symp_y"=.056,"symp_m"=.49,"symp_o"=.74)
-ages.bin.centers<-c(5,15,25,35,45,55,65,75,85)
-young  = cm_interpolate_cos(ages.bin.centers, symp.pars$age_y, 1, symp.pars$age_m, 0);
-old    = cm_interpolate_cos(ages.bin.centers, symp.pars$age_m, 0, symp.pars$age_o, 1);
-middle = 1 - young - old;
+### clinical fraction for each age class-- from Davies et al. Age-dependent effects in the transmission and control of
 
-rel.symp<-young * symp.pars$symp_y + middle * symp.pars$symp_m + old * symp.pars$symp_o
+rel.symp<-c(.4,.25,.37,.42,.51,.59,.72,.76,.76)
+
+### relative susceptiblity for each age class-- from Davies et al. Age-dependent effects in the transmission and control of
+
+rel.suscept<-c(.33,.37,.69,.81,.74,.8,.89,.77,.77)
 
 ### set parameters, units in days. I added in beta.mod.C to account for effects of quarantining. From https://cmmid.github.io/topics/covid19/current-patterns-transmission/reports/age_hypotheses/Main%20text%20-%20COVID-19%20dynamics%20in%20children_%20implications%20for%20policy%20-%20no_line_numbers.pdf
-dE<-4
-dP<-2.4
-dC<-3.2
-dA<-7
+dE<-3
+dP<-2.1
+dC<-2.9
+dA<-5
 beta1 <-0 ## seasonal forcing should be modest here--not included in model for now
 phase <- 0 ## when should seasonal forcing peak?
 b <- 0 ## set births to be zero currently
@@ -92,7 +88,7 @@ find.beta<-function(betax,R0)
   {
     for(j in 1:dim)
     {
-      Fmat[i,dim+j]<-betax
+      Fmat[i,dim+j]<-rel.suscept[i]*betax
     }
   }
   
@@ -100,7 +96,7 @@ find.beta<-function(betax,R0)
   {
     for(j in 1:dim)
     {
-      Fmat[i,2*dim+j]<-betax*beta.mod.C
+      Fmat[i,2*dim+j]<-rel.suscept[i]*betax*beta.mod.C
     }
   }
   
@@ -108,7 +104,7 @@ find.beta<-function(betax,R0)
   {
     for(j in 1:dim)
     {
-      Fmat[i,3*dim+j]<-betax*beta.mod.A
+      Fmat[i,3*dim+j]<-rel.suscept[i]*betax*beta.mod.A
     }
   }
   
@@ -165,6 +161,7 @@ SEIR.mod <- function(t,y,parms) {
   
   contact.mat=params["contact.mat"][[1]]
   rel.symp=params["rel.symp"][[1]]
+  rel.suscept=params["rel.suscept"][[1]]
   beta=params["beta"][[1]]
   dE=params["dE"][[1]]
   dP=params["dP"][[1]]
@@ -192,7 +189,7 @@ SEIR.mod <- function(t,y,parms) {
     }
     Si<-eval(as.symbol(paste0("S",class.names[i])))
     if (i==1) {births<-b*N} else {births<-0}
-    rate<-births - Si * (foi  + d)
+    rate<-births - Si * (rel.suscept[i]*foi  + d)
     assign(paste0("dS",class.names[i]),rate,envir = .GlobalEnv)
   }
   
@@ -210,7 +207,7 @@ SEIR.mod <- function(t,y,parms) {
     }
     Ei<-eval(as.symbol(paste0("E",class.names[i])))
     Si<-eval(as.symbol(paste0("S",class.names[i])))
-    rate<- Si*foi - Ei * (1/dE + d)
+    rate<- Si*foi*rel.suscept[i] - Ei * (1/dE + d)
     assign(paste0("dE",class.names[i]),rate,envir = .GlobalEnv)
   }
   
@@ -299,8 +296,8 @@ rootfun <- function (t, y, parms)
   return(sum(y[19:63]) - sum(y)*p.infected.fin) 
 }
 
-params<-list("contact.mat"=contact.mat,"rel.symp"=rel.symp,"beta"=beta,"dE"=dE,"dP"=dP,"dC"=dC,"dA"=dA,"beta.mod.A"=beta.mod.A,"beta.mod.C"=beta.mod.C,"beta1"=beta1,"b"=b,"d"=d,"phase"=phase,"p.infected.fin"=p.infected.fin)
-times<-seq(0,100,.25)
+params<-list("contact.mat"=contact.mat,"rel.symp"=rel.symp,"rel.suscept"=rel.suscept,"beta"=beta,"dE"=dE,"dP"=dP,"dC"=dC,"dA"=dA,"beta.mod.A"=beta.mod.A,"beta.mod.C"=beta.mod.C,"beta1"=beta1,"b"=b,"d"=d,"phase"=phase,"p.infected.fin"=p.infected.fin)
+times<-seq(0,100,.1)
 out<-ode(y=ICs,times=times,fun=SEIR.mod,parms=params,rootfun=rootfun)
 
 

@@ -1,20 +1,15 @@
 R0.adj<-F
 R0.max<-5
 R0.min<-2
-R0.US<-6 #R0 for entire US
+R0.US<-2.5 #R0 for entire US
 R0.name<-if(R0.adj==T) {paste0("dens.adj.",R0.max)} else {R0.US}
 theta<-1
 beta.mod.C<-.1
 beta.mod.A<-.5
 
-source("analysis.prep.R")
-
 analysis.name<-paste0("R0.",R0.name,".theta.",theta,".beta.mod.A.",beta.mod.A,".beta.mod.C.",beta.mod.C)
       
-home.dir<-getwd()
-setwd("~/SEIR/data")
 SEIR.output<-readRDS(paste0(analysis.name,".SEIR.output.RDS"))
-setwd(home.dir)
 
 dim<-9
 totalS<-SEIR.output[,2:(dim+1)]
@@ -27,6 +22,7 @@ totalRa<-SEIR.output[,(6*dim+2):(7*dim+1)]
 
 hosp.rates<-c(.001,.003,.012,.032,.049,.102,.166,.243,.273) #data https://www.imperial.ac.uk/media/imperial-college/medicine/sph/ide/gida-fellowships/Imperial-College-COVID19-NPI-modelling-16-03-2020.pdf
 icu.rates.given.hosp<-c(.05,.05,.05,.05,.063,.122,.274,.432,.709) #data https://www.imperial.ac.uk/media/imperial-college/medicine/sph/ide/gida-fellowships/Imperial-College-COVID19-NPI-modelling-16-03-2020.pdf
+
 
 hosp.cases<-c()
 for(i in 1:nrow(totalS))

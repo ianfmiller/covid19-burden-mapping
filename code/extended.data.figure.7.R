@@ -11,14 +11,13 @@ library(gridExtra)
 library(grid)
 library(tiff)
 library(viridis)
-library(reshape2)
 
-R0.US<-2
+R0<-3
 theta<-1
 beta.mod.C<-.1
 beta.mod.A<-.5
 
-analysis.name<-paste0("R0.",R0.US,".theta.",theta,".beta.mod.A.",beta.mod.A,".beta.mod.C.",beta.mod.C)
+analysis.name<-paste0("R0.dens.adj.",R0,".theta.",theta,".beta.mod.A.",beta.mod.A,".beta.mod.C.",beta.mod.C)
 
 hosp.cases<-readRDS(paste0(analysis.name,".hosp.cases.RDS"))
 rel.hosp.cases<-hosp.cases/mean(hosp.cases)
@@ -31,7 +30,7 @@ hosp.cases<-readRDS(paste0(analysis.name,".hosp.cases.RDS"))
 hosp.per.capita<-hosp.cases/demog$Both.Sexes..Total
 plot.data<-data.frame("fips"=fips,"dat"=log10(hosp.per.capita))
 
-p2<-usmap::plot_usmap(data=plot.data,values = "dat",col=NA)+scale_fill_gradientn(colors=viridis_pal(option="magma",direction = -1)(9),na.value='grey60',name="",limits=c(-2.53,-1.5),breaks=log10(c(.003,.01,.03)),labels=c(.003,.01,.03))+
+p2<-usmap::plot_usmap(data=plot.data,values = "dat",col=NA)+scale_fill_gradientn(colors=viridis_pal(option="magma",direction = -1)(9),na.value='grey60',name="",limits=c(-2.75,-1.68),breaks=log10(c(.001,.0025,.005,.01,.02)),labels=c(.001,.0025,.005,.01,.02))+
   theme(legend.position = "left",legend.key.width = unit(.5, "cm"),plot.title = element_text(hjust = .5,size=10))+labs(title="projected cumulative hospitalizations per capita\n")+geom_polygon(data =us_map(regions="states"),fill="NA",aes(x=x,y=y,group=group),color="black",size=.2)
 
 hosp.cases.spread<-readRDS(paste0(analysis.name,".hosp.cases.spread.RDS"))
@@ -40,14 +39,14 @@ spread.hospitalizations.per.bed<-hosp.cases.spread/hosp.data$calc.tot.beds
 spread.hospitalizations.per.bed[which(spread.hospitalizations.per.bed==0)]<-NA #switch to NA for plotting purposes
 plot.data<-data.frame("fips"=fips,"dat"=log10(spread.hospitalizations.per.bed))
 
-p3<-usmap::plot_usmap(data=plot.data,values = "dat",col=NA)+ geom_tile(aes(x = x, y = y, group = group,colour=''))+scale_fill_gradientn(colors=viridis_pal(option="magma",direction = -1)(9),na.value='grey60',name="",limits=c(-.53,1.25),breaks=log10(c(.3,1,3,10)),labels=c(.3,1,3,10))+
+p3<-usmap::plot_usmap(data=plot.data,values = "dat",col=NA)+ geom_tile(aes(x = x, y = y, group = group,colour=''))+scale_fill_gradientn(colors=viridis_pal(option="magma",direction = -1)(9),na.value='grey60',name="",limits=c(-.75,1),breaks=seq(-.75,1,.5),labels=round(10^seq(-.75,1,.5),1))+
   guides(colour=guide_legend("No\nhospitals", title.theme=element_text(size=6),override.aes=list(color="grey60",fill="grey60"),title.position = "right"))+theme(legend.position = "left",legend.spacing=unit(0.01, 'cm'),legend.key.width = unit(.5, "cm"),plot.title = element_text(hjust = .5,size=10))+labs(title="projected cumulative hospitalizations per bed\n after allocation to healthcare systems")+geom_polygon(data =us_map(regions="states"),fill="NA",aes(x=x,y=y,group=group),color="black",size=.2)
 
-R0.US<-5
+R0<-5
 theta<-0
 beta.mod.C<-1
 
-analysis.name<-paste0("R0.",R0.US,".theta.",theta,".beta.mod.A.",beta.mod.A,".beta.mod.C.",beta.mod.C)
+analysis.name<-paste0("R0.dens.adj.",R0,".theta.",theta,".beta.mod.A.",beta.mod.A,".beta.mod.C.",beta.mod.C)
 hosp.cases<-readRDS(paste0(analysis.name,".hosp.cases.RDS"))
 rel.hosp.cases<-hosp.cases/mean(hosp.cases)
 plot.data<-data.frame("fips"=fips,"dat"=log10(rel.hosp.cases))
@@ -59,7 +58,7 @@ hosp.cases<-readRDS(paste0(analysis.name,".hosp.cases.RDS"))
 hosp.per.capita<-hosp.cases/demog$Both.Sexes..Total
 plot.data<-data.frame("fips"=fips,"dat"=log10(hosp.per.capita))
 
-p5<-usmap::plot_usmap(data=plot.data,values = "dat",col=NA)+scale_fill_gradientn(colors=viridis_pal(option="magma",direction = -1)(9),na.value='grey60',name="",limits=c(-2.53,-1.5),breaks=log10(c(.003,.01,.03)),labels=c(.003,.01,.03))+
+p5<-usmap::plot_usmap(data=plot.data,values = "dat",col=NA)+scale_fill_gradientn(colors=viridis_pal(option="magma",direction = -1)(9),na.value='grey60',name="",limits=c(-2.75,-1.68),breaks=log10(c(.001,.0025,.005,.01,.02)),labels=c(.001,.0025,.005,.01,.02))+
   theme(legend.position = "left",legend.key.width = unit(.5, "cm"),plot.title = element_text(hjust = .5,size=10))+labs(title="projected cumulative hospitalizations per capita\n,")+geom_polygon(data =us_map(regions="states"),fill="NA",aes(x=x,y=y,group=group),color="black",size=.2)
 
 hosp.cases.spread<-readRDS(paste0(analysis.name,".hosp.cases.spread.RDS"))
@@ -68,14 +67,13 @@ spread.hospitalizations.per.bed<-hosp.cases.spread/hosp.data$calc.tot.beds
 spread.hospitalizations.per.bed[which(spread.hospitalizations.per.bed==0)]<-NA #switch to NA for plotting purposes
 plot.data<-data.frame("fips"=fips,"dat"=log10(spread.hospitalizations.per.bed))
 
-p6<-usmap::plot_usmap(data=plot.data,values = "dat",col=NA)+ geom_tile(aes(x = x, y = y, group = group,colour=''))+scale_fill_gradientn(colors=viridis_pal(option="magma",direction = -1)(9),na.value='grey60',name="",limits=c(-.53,1.25),breaks=log10(c(.3,1,3,10)),labels=c(.3,1,3,10))+
+p6<-usmap::plot_usmap(data=plot.data,values = "dat",col=NA)+ geom_tile(aes(x = x, y = y, group = group,colour=''))+scale_fill_gradientn(colors=viridis_pal(option="magma",direction = -1)(9),na.value='grey60',name="",limits=c(-.75,1),breaks=seq(-.75,1,.5),labels=round(10^seq(-.75,1,.5),1))+
   guides(colour=guide_legend("No\nhospitals", title.theme=element_text(size=6),override.aes=list(color="grey60",fill="grey60"),title.position = "right"))+theme(legend.position = "left",legend.spacing=unit(0.01,"cm"),legend.key.width = unit(.5, "cm"),plot.title = element_text(hjust = .5,size=10))+labs(title="projected cumulative hospitalizations per bed\n after allocation to healthcare systems")+geom_polygon(data =us_map(regions="states"),fill="NA",aes(x=x,y=y,group=group),color="black",size=.2)
 
-
-R0.US<-2
+R0.US<-3
 theta<-1
 beta.mod.C<-.1
-analysis.name<-paste0("R0.",R0.US,".theta.",theta,".beta.mod.A.",beta.mod.A,".beta.mod.C.",beta.mod.C)
+analysis.name<-paste0("R0.dens.adj.",R0.US,".theta.",theta,".beta.mod.A.",beta.mod.A,".beta.mod.C.",beta.mod.C)
 SEIR.output<-readRDS(paste0(analysis.name,".SEIR.output.RDS"))
 new.dat1<-c()
 for (i in seq(1,nrow(demog.binned),10))
@@ -99,7 +97,7 @@ new.dat1$variable[which(new.dat1$variable=="Ip.80plus")]<-8
 R0.US<-5
 theta<-0
 beta.mod.C<-1
-analysis.name<-paste0("R0.",R0.US,".theta.",theta,".beta.mod.A.",beta.mod.A,".beta.mod.C.",beta.mod.C)
+analysis.name<-paste0("R0.dens.adj.",R0.US,".theta.",theta,".beta.mod.A.",beta.mod.A,".beta.mod.C.",beta.mod.C)
 SEIR.output<-readRDS(paste0(analysis.name,".SEIR.output.RDS"))
 new.dat2<-c()
 for (i in seq(1,nrow(demog.binned),10))
@@ -128,74 +126,73 @@ p7<-ggplot(plot.dat,aes(variable,value,group=index,color=scenario))+geom_line()+
   scale_x_discrete(labels=c("0-9","10-19","20-29","30-39","40-49","50-59","60-69","70-79","80+"))+
   guides(color=guide_legend(override.aes=list(color=c("blue","red"),size=1.1)))
 
-
-R0.US<-2
+R0<-3
 theta<-1
 beta.mod.C<-.1
-analysis.name<-paste0("R0.",R0.US,".theta.",theta,".beta.mod.A.",beta.mod.A,".beta.mod.C.",beta.mod.C)
+analysis.name<-paste0("R0.dens.adj.",R0,".theta.",theta,".beta.mod.A.",beta.mod.A,".beta.mod.C.",beta.mod.C)
 hosp.cases<-readRDS(paste0(analysis.name,".hosp.cases.RDS"))
 hosp.per.capita<-hosp.cases/demog$Both.Sexes..Total
 top.10.index.opt<-which(hosp.per.capita>=quantile(hosp.per.capita,na.rm = T,.9))
-  
-R0.US<-5
+
+R0<-5
 theta<-0
 beta.mod.C<-1
-analysis.name<-paste0("R0.",R0.US,".theta.",theta,".beta.mod.A.",beta.mod.A,".beta.mod.C.",beta.mod.C)
+analysis.name<-paste0("R0.dens.adj.",R0,".theta.",theta,".beta.mod.A.",beta.mod.A,".beta.mod.C.",beta.mod.C)
 hosp.cases<-readRDS(paste0(analysis.name,".hosp.cases.RDS"))
 hosp.per.capita<-hosp.cases/demog$Both.Sexes..Total
 top.10.index.pess<-which(hosp.per.capita>=quantile(hosp.per.capita,na.rm = T,.9))
-  
+
 #315 counties in both top.10.index
-#301 overlap
-  
+#244 overlap
+
 ID.index<-rep(.25,times=length(fips))
 ID.index[intersect(top.10.index.opt,top.10.index.pess)]<-.75 
 ID.index[top.10.index.opt[which(!top.10.index.opt %in% top.10.index.pess)]]<-.5
 ID.index[top.10.index.pess[which(!top.10.index.pess %in% top.10.index.opt)]]<-1
 plot.data<-data.frame("fips"=fips,"dat"=ID.index)
 p8<-plot_usmap(data=plot.data,values = "dat",col=NA)+
-scale_fill_gradientn(colours=c("grey60","blue","purple","red"),values=c(.25,.5,.75,1),guide="legend",name="",limits=c(0,1),breaks=c(.25,.5,.75,1),labels=c("neither","optimistic\nonly","both","pessimistic\nonly"))+
-theme(legend.position = "left",legend.key.width = unit(.5, "cm"),legend.key.height = unit(.5, "cm"),legend.text = element_text(size=6),plot.title = element_text(hjust = .5,size=10))+
-labs(title="counties at or above 90% quantile\ncumulative hospitalizations per capita")+geom_polygon(data =us_map(regions="states"),fill="NA",aes(x=x,y=y,group=group),color="black",size=.2)
+  scale_fill_gradientn(colours=c("grey60","blue","purple","red"),values=c(.25,.5,.75,1),guide="legend",name="",limits=c(0,1),breaks=c(.25,.5,.75,1),labels=c("neither","optimistic\nonly","both","pessimistic\nonly"))+
+  theme(legend.position = "left",legend.key.width = unit(.5, "cm"),legend.key.height = unit(.5, "cm"),legend.text = element_text(size=6),plot.title = element_text(hjust = .5,size=10))+
+  labs(title="counties at or above 90% quantile\ncumulative hospitalizations per capita")+geom_polygon(data =us_map(regions="states"),fill="NA",aes(x=x,y=y,group=group),color="black",size=.2)
 
-R0.US<-2
+R0<-3
 theta<-1
 beta.mod.C<-.1
-analysis.name<-paste0("R0.",R0.US,".theta.",theta,".beta.mod.A.",beta.mod.A,".beta.mod.C.",beta.mod.C)
+analysis.name<-paste0("R0.dens.adj.",R0,".theta.",theta,".beta.mod.A.",beta.mod.A,".beta.mod.C.",beta.mod.C)
 hosp.cases.spread<-readRDS(paste0(analysis.name,".hosp.cases.spread.RDS"))
 hosp.cases.spread[which(is.nan(hosp.cases.spread))]<-0
 spread.hospitalizations.per.bed<-hosp.cases.spread/hosp.data$calc.tot.beds
 spread.hospitalizations.per.bed[which(spread.hospitalizations.per.bed==0)]<-NA #switch to NA for plotting purposes
 top.10.index.opt<-which(spread.hospitalizations.per.bed>=quantile(spread.hospitalizations.per.bed,na.rm = T,.9))
 
-R0.US<-5
+R0<-5
 theta<-0
 beta.mod.C<-1
-analysis.name<-paste0("R0.",R0.US,".theta.",theta,".beta.mod.A.",beta.mod.A,".beta.mod.C.",beta.mod.C)
+analysis.name<-paste0("R0.dens.adj.",R0,".theta.",theta,".beta.mod.A.",beta.mod.A,".beta.mod.C.",beta.mod.C)
 hosp.cases.spread<-readRDS(paste0(analysis.name,".hosp.cases.spread.RDS"))
 hosp.cases.spread[which(is.nan(hosp.cases.spread))]<-0
 spread.hospitalizations.per.bed<-hosp.cases.spread/hosp.data$calc.tot.beds
 spread.hospitalizations.per.bed[which(spread.hospitalizations.per.bed==0)]<-NA #switch to NA for plotting purposes
 top.10.index.pess<-which(spread.hospitalizations.per.bed>=quantile(spread.hospitalizations.per.bed,na.rm = T,.9))
-  
+
 #248 counties in both top.10.index
-#241 overlap
-  
+#223 overlap
+
 ID.index<-rep(.25,times=length(fips))
 ID.index[intersect(top.10.index.opt,top.10.index.pess)]<-.75
 ID.index[top.10.index.opt[which(!top.10.index.opt %in% top.10.index.pess)]]<-.5
 ID.index[top.10.index.pess[which(!top.10.index.pess %in% top.10.index.opt)]]<-1
 plot.data<-data.frame("fips"=fips,"dat"=ID.index)
 p9<-plot_usmap(data=plot.data,values = "dat",col=NA)+
-scale_fill_gradientn(colours=c("grey60","blue","purple","red"),values=c(.25,.5,.75,1),guide="legend",name="",limits=c(0,1),breaks=c(.25,.5,.75,1),labels=c("neither","optimistic\nonly","both","pessimistic\nonly"))+
-theme(legend.position = "left",legend.key.width = unit(.5, "cm"),legend.key.height = unit(.5, "cm"),legend.text = element_text(size=6),plot.title = element_text(hjust = .5,size=10))+
-labs(title="counties at or above 90% quantile\ncumulative hospitalizations per hospital bed")+geom_polygon(data =us_map(regions="states"),fill="NA",aes(x=x,y=y,group=group),color="black",size=.2)
-                                                                                                                                                                                      panel.background = element_blank()
+  scale_fill_gradientn(colours=c("grey60","blue","purple","red"),values=c(.25,.5,.75,1),guide="legend",name="",limits=c(0,1),breaks=c(.25,.5,.75,1),labels=c("neither","optimistic\nonly","both","pessimistic\nonly"))+
+  theme(legend.position = "left",legend.key.width = unit(.5, "cm"),legend.key.height = unit(.5, "cm"),legend.text = element_text(size=6),plot.title = element_text(hjust = .5,size=10))+
+  labs(title="counties at or above 90% quantile\ncumulative hospitalizations per hospital bed")+geom_polygon(data =us_map(regions="states"),fill="NA",aes(x=x,y=y,group=group),color="black",size=.2)
+panel.background = element_blank()
 
 #title1<-textGrob(bquote(paste(R[0]," = 2, ",theta," = 1, ",b[c]," = 0.1")), gp=gpar(fontsize=20,font=8),hjust=.33)
 #title2<-textGrob(bquote(paste(R[0]," = 6, ",theta," = 0, ",b[c]," = 1")), gp=gpar(fontsize=20,font=8),hjust=.33)
-title1<-textGrob("optimistic scenario", gp=gpar(fontsize=20),hjust=.33)
-title2<-textGrob("pessimistic scenario", gp=gpar(fontsize=20),hjust=.33)
+title1<-textGrob("alternate optimistic scenario", gp=gpar(fontsize=20),hjust=.33)
+title2<-textGrob("alternate pessimistic scenario", gp=gpar(fontsize=20),hjust=.33)
 title3<-textGrob("comparison", gp=gpar(fontsize=20),hjust=.33)
 
 grid.arrange(
@@ -213,10 +210,10 @@ grid.arrange(
         arrangeGrob(p6,left = textGrob("f", x = unit(3, "npc"),  y  = unit(.85, "npc"), gp=gpar(col="black", fontsize=18)))
       ),top=title2),
     arrangeGrob(
-        grobs=list(
-          arrangeGrob(p7,left = textGrob("g", x = unit(2.25, "npc"),  y  = unit(.85, "npc"), gp=gpar(col="black", fontsize=18))),
-          arrangeGrob(p8,left = textGrob("h", x = unit(2.25, "npc"),  y  = unit(.85, "npc"), gp=gpar(col="black", fontsize=18))),
-          arrangeGrob(p9,left = textGrob("i", x = unit(2.25, "npc"),  y  = unit(.85, "npc"), gp=gpar(col="black", fontsize=18)))
-        ),top=title3)
-    ),nrow=1,ncol=3)
+      grobs=list(
+        arrangeGrob(p7,left = textGrob("g", x = unit(2.25, "npc"),  y  = unit(.85, "npc"), gp=gpar(col="black", fontsize=18))),
+        arrangeGrob(p8,left = textGrob("h", x = unit(2.25, "npc"),  y  = unit(.85, "npc"), gp=gpar(col="black", fontsize=18))),
+        arrangeGrob(p9,left = textGrob("i", x = unit(2.25, "npc"),  y  = unit(.85, "npc"), gp=gpar(col="black", fontsize=18)))
+      ),top=title3)
+  ),nrow=1,ncol=3)
 
